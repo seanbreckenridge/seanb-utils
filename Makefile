@@ -10,7 +10,7 @@ install: doctor-path deps-base install-shellscripts check-lang python-install go
 	@echo install: done ✓
 
 doctor-path:
-	@"${CURDIR}/installer/check-local-bin" $(LOCAL_BIN)
+	@"${CURDIR}/installer/check-path" $(LOCAL_BIN)
 
 deps-base:
 	@# actual coreutils, just check a few that might be needed
@@ -44,13 +44,13 @@ check-lang:
 	@echo check-lang: done ✓
 
 python-install:
-	@"${CURDIR}/installer/python-installs" || true
+	@if "${CURDIR}/installer/python-installs"; then echo python-installs: done ✓; fi || true
 
 golang-install:
-	@"${CURDIR}/installer/golang-installs" || true
+	@if "${CURDIR}/installer/golang-installs"; then echo golang-installs: done ✓; fi || true
 
 cargo-install:
-	@"${CURDIR}/installer/cargo-installs" || true
+	@if "${CURDIR}/installer/cargo-installs"; then echo cargo-installs: done ✓; fi || true
 
 install-shellscripts:
 	@echo install-shellscripts: Installing...

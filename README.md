@@ -33,6 +33,13 @@ To check for dependencies/path issues, run `make`
 
 To install, run `make install` (no `sudo` required)
 
+```bash
+git clone https://github.com/seanbreckenridge/seanb-coreutils
+cd ./seanb-coreutils
+make
+make install
+```
+
 To setup `go`/`cargo` for installing from source, I would add something like this to your `.zshrc`/`.bashrc`:
 
 ```bash

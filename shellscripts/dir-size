@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 # prints the number of bytes in DIR
+# first argument: directory
+# additional (after first) arguments are passed to 'du'
 
 set -e
 set -o pipefail
 
 DIR="${1?Pass directory as first argument}"
+shift
+
 if [[ ! -d "$DIR" ]]; then
 	printf '%s is not a directory\n' "$DIR" >&2
 	exit 1
 fi
 
-du -bcs "$DIR" | awk 'END{print $1}'
+du -bcs "$@" "$DIR" | awk 'END{print $1}'

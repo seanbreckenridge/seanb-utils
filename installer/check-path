@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+
+set -e
+
+main() {
+	local bindir localizedbin
+	bindir="${1:-${HOME}/.local/bin}"
+	localizedbin="${bindir/#$HOME/\$HOME}"
+	if [[ ":$PATH:" == *":${bindir}:"* ]]; then
+		echo "check-path: success - \$PATH contains ${localizedbin}"
+		return 0
+	else
+		# shellcheck disable=SC2016
+		printf 'check-path: fail - Your $PATH is missing %s, add it in your shell profile:\n\nexport PATH="%s:$PATH"\n' "$localizedbin" "$localizedbin"
+		return 1
+	fi
+}
+
+main "$@" || exit $?

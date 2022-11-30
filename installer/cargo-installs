@@ -1,2 +1,24 @@
 #!/usr/bin/env bash
-echo cargo installs...
+
+set -e
+
+# shellcheck disable=SC2016
+havecmd -V 'aborting cargo install...' cargo || exit $?
+
+THIS_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
+cd "${THIS_DIR}/" || exit $?
+
+declare -a DATA=(
+  'evry'
+  '--git https://github.com/seanbreckenridge/wait-for-internet'
+)
+
+install_cargo_package() {
+  local -a args
+  read -ra args <<<"$1"
+  cargo install "${args[@]}" || return $?
+}
+
+for data in "${DATA[@]}"; do
+  install_cargo_package "$data" || exit $?
+done
