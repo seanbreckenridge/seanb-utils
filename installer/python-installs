@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+set -e
+
+# shellcheck disable=SC2016
+havecmd -V 'aborting python install...' python3 || exit $?
+
+THIS_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
+cd "${THIS_DIR}/../python-src" || exit $?
+
+python3 -m pip install '.'
