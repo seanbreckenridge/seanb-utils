@@ -15,13 +15,9 @@ This includes:
 
 # TODO: ADD:
 
-- gifme
-- giturl
 - group-and-termgraph
-- has-git-remote
 - html-head
 - img-download
-- in-gitdir
 - ix
 - json-compress
 - maverage
@@ -29,8 +25,6 @@ This includes:
 - mtotal
 - openurl
 - openurls
-- optigif
-- optijpg
 - rread
 
 Other stuff from my [shortcuts.toml](https://sean.fish/d/shortcuts.toml?redirect) file
@@ -127,6 +121,10 @@ Requires `python 3.8+`/`golang` to install:
   - `epochguess` - reads anything from STDIN. convert any epoch timestamps that looks like a datetime to a date, convert them to local-readable timestamps
 - Others:
   - `shebang` - creates a script with the given shebang. If a known language, adds a basic template
+  - `gifme` - Creates a gif from a (section of a) video file. Lets you specify start/end times and an fps for the gif to run at
+  - `git` - these are helpers that return `0` if the condition is met, they're used like: `in-gitdir && command_do_something`
+    - `in-gitdir` - currently in a git directory
+    - `has-git-remote` - has a `git remote --verbose`
 
 Cross Platform Helpers - these use [on_machine](https://github.com/seanbreckenridge/on_machine) to run different commands based on what operating system you're on.
 
