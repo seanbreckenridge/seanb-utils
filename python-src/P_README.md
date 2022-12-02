@@ -8,7 +8,7 @@ This is a [namespace package](https://packaging.python.org/en/latest/guides/pack
 >>>PMARK
 perl -E 'print "`"x3, "python", "\n"'
 python3 -c 'import seanb.notify; help(seanb.notify.notify)' | sed -e '1d' | chomp
-perl -E 'print "`"x3'
+perl -E 'print "`"x3', "\n\n"
 ```
 
 `seanb.jsonfast`: Speeds up JSON dump/load if [orjson](https://github.com/ijl/orjson) is installed. dumps also has a `minifed` flag which can compress JSON

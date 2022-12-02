@@ -15,7 +15,6 @@ This includes:
 
 # TODO: ADD:
 
-- group-and-termgraph
 - html-head
 - img-download
 - ix
@@ -120,6 +119,8 @@ Requires `python 3.8+`/`golang` to install:
 - Data Wrangling
   - `lower`/`upper` - converts all text from STDIN to lowercase/uppercase
   - `capitalize` - 'capitalizes' (first letter of) input, e.g. WORD -> Word; word -> Word
+  - `tally` - shorthand for 'sort | uniq -c | sort -n'
+  - `group-and-termgraph` - takes lines of data and groups/graphs it using [termgraph](https://github.com/mkaz/termgraph). Sort of like a fancy 'sort | uniq -c | sort -n'
   - `epochdisplay` - given one or more epoch timestamps (`date +"%s"`) prints a readable date. If no args are given, reads from STDIN
   - `epochguess` - reads anything from STDIN. convert any epoch timestamps that looks like a datetime to a date, convert them to local-readable timestamps
 - Others:

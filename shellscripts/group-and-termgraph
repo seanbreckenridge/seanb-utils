@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+
+usage() {
+	echo "Usage: command | group-and-termgraph
+
+takes data from STDIN
+groups it and graphs it in your terminal using termgraph:
+https://github.com/mkaz/termgraph
+
+This can be thought of as a fancy 'sort | uniq -c | sort'"
+}
+
+if [[ "$1" == '-h' ]]; then
+	usage
+	exit 0
+fi
+
+set -e
+set -o pipefail
+
+havecmd -v rev || exit $?
+havecmd -v awk || exit $?
+havecmd -V 'Install from https://github.com/seanbreckenridge/chomp' 'chomp' || exit $?
+havecmd -V 'Install with "pip install termgraph"' 'termgraph' || exit $?
+
+# to explain
+# remove extra spaces, count using 'uniq -c', and replace commas (used as a delimtier for termgraph) with underscores
+chomp | sort | uniq -c | chomp | sed -e 's/,/_/g' |
+	# move the first column (count) to the end, print the rest of the columns first
+	awk '{for(i=2;i<=NF;i++){printf "%s ", $i}; printf $1; printf "\n"}' |
+	# replace the last space with a comma (the termgraph delimiter)
+	rev | sed -e 's/ /,/' | rev |
+	# graph with termgraph
+	termgraph --delim ',' "$@" |
+	# remove extra lines termgraph prints, sort termgraph by the last column
+	chomp | awk '{print $NF,$0}' | sort -n | cut -f2- -d' '
