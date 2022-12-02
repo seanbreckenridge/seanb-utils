@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+# wrapper script for sending notifications on mac/linux
+
+declare -a linux_options
+linux_options=()
+
+usage() {
+	echo "Usage: notify [-u] [-t] [TITLE] [BODY]
+
+Accepts a subset of the notify-send args [-u|-t] on linux. Ignored on mac."
+	exit "${1:-0}"
+}
+
+## read options
+while getopts "t:u:" OPT; do
+	case "$OPT" in
+	t)
+		linux_options+=("-${OPT}" "$OPTARG")
+		;;
+	u)
+		linux_options+=("-${OPT}" "$OPTARG")
+		;;
+	*)
+		usage 1
+		;;
+	esac
+done
+shift $((OPTIND - 1))
+
+if (($# < 1)); then
+	echo -e "notify: error: Must provide something to send!\n" 2>&1
+	usage 1
+fi
+
+# Send Notification!
+
+case "$ON_OS" in
+linux*)
+	# if user passed arguments which were parsed
+	if (("${#linux_options[@]}" > 1)); then
+		exec notify-send "${linux_options[@]}" "$@"
+	else
+		exec notify-send "$@"
+	fi
+	;;
+mac*)
+	# user provided just one string to send
+	if (($# == 1)); then
+		exec osascript -e "$(printf 'display notification "%s" with title "Notification!"' "$1")"
+	else
+		exec osascript -e "$(printf 'display notification "%s" with title "%s"' "$2" "$1")"
+	fi
+	;;
+*)
+	echo "$*"
+	;;
+esac

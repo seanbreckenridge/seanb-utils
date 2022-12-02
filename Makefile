@@ -6,7 +6,7 @@ HAVECMD_LOCAL="${CURDIR}/shellscripts/havecmd"
 doctor: doctor-path deps-base check-lang
 	@echo doctor: done ✓
 
-install: doctor-path deps-base install-shellscripts check-lang python-install golang-install cargo-install
+install: doctor-path deps-base install-shellscripts check-lang exists-install python-install golang-install
 	@echo install: done ✓
 
 doctor-path:
@@ -28,11 +28,11 @@ deps-base:
 	@$(HAVECMD_LOCAL) -v sed
 	@$(HAVECMD_LOCAL) -v find
 	@$(HAVECMD_LOCAL) -v grep
+	@$(HAVECMD_LOCAL) -v gcc
 	@# more opinionated stuff thats used in lots of scripts here
 	@$(HAVECMD_LOCAL) -V 'optional/recommended install' rsync || true
 	@$(HAVECMD_LOCAL) -V 'optional/recommended install; See https://github.com/BurntSushi/ripgrep#installation' rg || true
 	@$(HAVECMD_LOCAL) -V 'optional/recommended install; See https://github.com/sharkdp/fd#installation' fd || true
-	@$(HAVECMD_LOCAL) -V 'optional/recommended install; See https://github.com/bootandy/dust#install' dust || true
 	@$(HAVECMD_LOCAL) -V 'optional/recommended install; See https://github.com/junegunn/fzf#installation' fzf || true
 	@echo deps-base: done ✓
 
@@ -49,8 +49,13 @@ python-install:
 golang-install:
 	@if "${CURDIR}/installer/golang-installs"; then echo golang-installs: done ✓; fi || true
 
+# removed from 'make install', not required for most scripts here
+# will add back if needed
 cargo-install:
 	@if "${CURDIR}/installer/cargo-installs"; then echo cargo-installs: done ✓; fi || true
+
+exists-install:
+	@if "${CURDIR}/installer/exists-install"; then echo exists-install: done ✓; else echo exists-install: \'exists\' already on your path; fi || true
 
 install-shellscripts:
 	@echo install-shellscripts: Installing...

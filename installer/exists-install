@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+# already installed, skip
+havecmd exists && exit 1
+
+havecmd -v gcc || exit $?
+
+TDIR="$(mktemp -d)"
+
+build() {
+	git clone 'https://github.com/seanbreckenridge/exists' "$TDIR/exists" || return $?
+	cd "$TDIR/exists" || return $?
+	make install || return $?
+}
+
+build
+
+rm -rf "$TDIR"

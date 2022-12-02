@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+
+usage() {
+	echo "Usage: command | clipcopy [-h]
+
+copy text from STDIN onto your clipboard
+
+e.g. 'ls | clipcopy'
+
+on X, puts text on 'clipboard', doesn't affect selection clipboard
+on mac, uses pbcopy (cmd+c/v clipboard)
+on termux, this requires the termux API
+on windows, uses clip.exe"
+	exit "${1:-0}"
+}
+
+if [[ "$1" == '-h' ]]; then
+	usage
+fi
+
+STDIN="$(cat)"
+
+[[ -z "${STDIN}" ]] && {
+	echo -e 'clipcopy: No data received from STDIN\n' >&2
+	usage 1
+}
+
+case "${ON_OS:-$(on_machine)}" in
+linux*)
+	printf '%s' "${STDIN}" | xclip -in -selection clipboard
+	;;
+mac*)
+	printf '%s' "${STDIN}" | pbcopy
+	;;
+windows*)
+	printf '%s' "${STDIN}" | clip.exe
+	;;
+android_termux*)
+	havecmd -V 'install the termux API package: https://github.com/termux/termux-api-package#readme' termux-clipboard-set || exit $?
+	printf '%s' "${STDIN}" | termux-clipboard-set
+	;;
+*)
+	echo "clipcopy: not sure how to access clipboard..." >&2
+	printf '%s\n' "${STDIN}"
+	exit 1
+	;;
+esac

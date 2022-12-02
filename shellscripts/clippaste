@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+if [[ "$1" == '-h' ]]; then
+	echo "Usage: clippaste [-h]
+
+paste text from clipboard to STDOUT"
+	exit 0
+fi
+
+case "${ON_OS:-$(on_machine)}" in
+linux*)
+	exec xclip -out -selection clipboard
+	;;
+mac*)
+	exec pbpaste
+	;;
+android_termux*)
+	havecmd -V 'install the termux API package: https://github.com/termux/termux-api-package#readme' termux-clipboard-get || exit $?
+	exec termux-clipboard-get
+	;;
+windows)
+	exec clip.exe
+	;;
+*)
+	echo 'clippaste: not sure how to access clipboard...' >&2
+	exit 1
+	;;
+esac

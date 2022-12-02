@@ -9,31 +9,36 @@ THIS_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
 cd "${THIS_DIR}/" || exit $?
 
 [[ -z "$GOBIN" ]] && {
-  # shellcheck disable=SC2016
-  printf 'No $GOBIN set, add something like this to your profile:\n'
-  cat <<EOF
+	# shellcheck disable=SC2016
+	printf 'No $GOBIN set, add something like this to your profile:\n'
+	cat <<EOF
 export GOPATH="${HOME}/.local/share/go"
 export GOBIN="${GOPATH}/bin"
 EOF
-  exit 1
+	exit 1
 }
 
 ./check-path "$GOBIN" || exit $?
 
 install_golang_package() {
-  local -a packageinfo
-  read -ra packageinfo <<<"${1}"
-  printf 'golang-installs: Installing %s\n' "${packageinfo[0]}"
-  go install -v "${packageinfo[1]}@latest" || return $?
+	local -a packageinfo
+	read -ra packageinfo <<<"${1}"
+	printf 'golang-installs: Installing %s\n' "${packageinfo[0]}"
+	go install -v "${packageinfo[1]}@latest" || return $?
 }
 
 declare -a DATA=(
-  'newest github.com/seanbreckenridge/newest'
-  'chomp github.com/seanbreckenridge/chomp'
-  'fzfcache github.com/seanbreckenridge/fzfcache'
-  'on_machine github.com/seanbreckenridge/on_machine/cmd/on_machine'
+	'newest github.com/seanbreckenridge/newest'
+	'chomp github.com/seanbreckenridge/chomp'
+	'on_machine github.com/seanbreckenridge/on_machine/cmd/on_machine'
 )
 
 for data in "${DATA[@]}"; do
-  install_golang_package "$data" || exit $?
+	install_golang_package "$data" || exit $?
 done
+
+if havecmd on_machine; then
+	if [[ "$(on_machine '%o')" == 'linux' ]]; then
+		havecmd -V 'lsb_release improves on_machine distribution detection' lsb_release || true
+	fi
+fi

@@ -1,12 +1,22 @@
 #!/usr/bin/env bash
-# prints the number of bytes in DIR
-# first argument: directory
-# additional (after first) arguments are passed to 'du'
 
 set -e
 set -o pipefail
 
-DIR="${1?Pass directory as first argument}"
+usage() {
+	echo 'dir-size [-h] <DIR> [du options...]
+prints the number of bytes in DIR
+additional (after first) arguments are passed to du'
+	exit "${1:-0}"
+}
+
+[[ "$1" == '-h' ]] && usage
+
+DIR="$1"
+if [[ -z "$DIR" ]]; then
+	echo -e 'dir-size: error: Pass directory as first argument\n' >&2
+	usage 1
+fi
 shift
 
 if [[ ! -d "$DIR" ]]; then
@@ -14,4 +24,4 @@ if [[ ! -d "$DIR" ]]; then
 	exit 1
 fi
 
-du -bcs "$@" "$DIR" | awk 'END{print $1}'
+du -bcs "$@" "$DIR" | awk 'END{print $1}' || exit $?
