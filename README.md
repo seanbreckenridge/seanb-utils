@@ -114,6 +114,9 @@ Requires `python 3.8+`/`golang` to install:
   - `havecmd` - command to check if commands are available
   - `dir-size` - prints the total size of a directory
   - `symlink` - a helper script to make a symlink since I always forget how to
+- File Formats
+  - `json-compress` - compresses JSON (removes extra spaces/newlines), only writes to the file if size of data was changed
+  - `tq` - converts a TOML file to JSON, usually piped to [jq](https://github.com/stedolan/jq). e.g.,: `tq <data.toml | jq '.conf'`
 - Data Wrangling
   - `lower`/`upper` - converts all text from STDIN to lowercase/uppercase
   - `capitalize` - 'capitalizes' (first letter of) input, e.g. WORD -> Word; word -> Word
