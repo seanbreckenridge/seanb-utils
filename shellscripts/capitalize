@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# capitalizes the first character of a word from STDIN
+s="$(lower)" || exit $?
+echo "$(upper <<<"${s:0:1}")${s:1}"
