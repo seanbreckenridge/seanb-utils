@@ -101,9 +101,9 @@ Requires `python 3.8+`/`golang` to install:
 
 - The `./python-src` namespace package, which includes helper functions, see [python-src/README.md](./python-src/README.md). Also installs required python libraries for any python scripts here
 - `go` - <https://go.dev/doc/install>
-  - [newest](https://github.com/seanbreckenridge/newest) - print most recently modified file in directory
-  - [chomp](https://github.com/seanbreckenridge/chomp) - remove whitespace/empty lines from command output
-  - [on_machine](https://github.com/seanbreckenridge/on_machine) - detect what operating system/machine you're currently on
+  - [`newest`](https://github.com/seanbreckenridge/newest) - print most recently modified file in directory
+  - [`chomp`](https://github.com/seanbreckenridge/chomp) - remove whitespace/empty lines from command output
+  - [`on_machine`](https://github.com/seanbreckenridge/on_machine) - detect what operating system/machine you're currently on
 - [`exists`](https://github.com/seanbreckenridge/exists) - pipe to test if files exist
 
 ... and shellscripts:
