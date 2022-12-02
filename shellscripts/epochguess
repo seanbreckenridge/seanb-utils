@@ -62,15 +62,15 @@ def guess_epochs(line: str, after: int, only_first: bool, use_token: str = " ") 
 def main(after: int, first: bool, delimiter: str):
     """
     \b
-read anything from STDIN
-convert any epoch timestamps that looks like a datetime to a date,
-convert them to local-readable timestamps
+    read anything from STDIN
+    convert any epoch timestamps that looks like a datetime to a date,
+    convert them to local-readable timestamps
 
     \b
-[ ~ ] $ printf "%d this is some text\n" "$(date +"%s")"
-1619933459 this is some text
-[ ~ ] $ printf "%d this is some text\n" "$(date +"%s")" | epochguess
-2021-05-01 22:31:03 this is some text
+    $ printf "%d this is some text" "$(date +"%s")"
+    1619933459 this is some text
+    $ printf "%d this is some text" "$(date +"%s")" | epochguess
+    2021-05-01 22:31:03 this is some text
     """
     for line in iter(sys.stdin.readline, ""):
         print(guess_epochs(line.strip(), after, first, delimiter))

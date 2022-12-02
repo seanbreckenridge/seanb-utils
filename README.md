@@ -114,16 +114,16 @@ Requires `python 3.8+`/`golang` to install:
 #### shellscripts
 
 - Utility Scripts
-    - `havecmd` - command to check if commands are available
-    - `dir-size` - prints the total size of a directory
-    - `symlink` - a helper script to make a symlink since I always forget how to
+  - `havecmd` - command to check if commands are available
+  - `dir-size` - prints the total size of a directory
+  - `symlink` - a helper script to make a symlink since I always forget how to
 - Data Wrangling
-    - `lower`/`upper` - converts all text from STDIN to lowercase/uppercase
-    - `capitalize` - 'capitalizes' (first letter of) input, e.g. WORD -> Word; word -> Word
-    - `epochdisplay` - given one or more epoch timestamps (`date +"%s"`) prints a readable date. If no args are given, reads from STDIN
-    - `epochguess` - reads anything from STDIN. convert any epoch timestamps that looks like a datetime to a date, convert them to local-readable timestamps
+  - `lower`/`upper` - converts all text from STDIN to lowercase/uppercase
+  - `capitalize` - 'capitalizes' (first letter of) input, e.g. WORD -> Word; word -> Word
+  - `epochdisplay` - given one or more epoch timestamps (`date +"%s"`) prints a readable date. If no args are given, reads from STDIN
+  - `epochguess` - reads anything from STDIN. convert any epoch timestamps that looks like a datetime to a date, convert them to local-readable timestamps
 - Others:
-    - `shebang` - creates a script with the given shebang. If a known language, adds a basic template
+  - `shebang` - creates a script with the given shebang. If a known language, adds a basic template
 
 Cross Platform Helpers - these use [on_machine](https://github.com/seanbreckenridge/on_machine) to run different commands based on what operating system you're on.
 
