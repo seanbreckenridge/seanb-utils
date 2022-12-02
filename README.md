@@ -105,7 +105,7 @@ Requires `python 3.8+`/`golang` to install:
 
 `make install` installs:
 
-- The `./python-src` namespace package, which includes helper functions, see [python-src/README.md](./python-src/README.md)
+- The `./python-src` namespace package, which includes helper functions, see [python-src/README.md](./python-src/README.md), and installs required python libraries for the scripts here
 - `go` - <https://go.dev/doc/install>
   - [newest](https://github.com/seanbreckenridge/newest) - print most recently modified file in directory
   - [chomp](https://github.com/seanbreckenridge/chomp) - remove whitespace/empty lines from command output
