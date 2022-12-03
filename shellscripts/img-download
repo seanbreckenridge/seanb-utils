@@ -1,0 +1,52 @@
+#!/usr/bin/env python3
+
+import os
+import sys
+import tempfile
+from urllib.parse import urlparse
+
+import requests
+import click
+from seanb import clipboard
+
+
+def url_filename(url: str) -> str:
+    # get the basename of the path of the URL
+    # ignoring any params/query/fragment
+    f = os.path.basename(urlparse(url).path)
+    if f.strip():
+        return f
+    return "image"
+
+
+@click.command()
+@click.argument("URL", default=clipboard.clippaste().strip())
+def main(url) -> None:
+    """
+    \b
+    downloads an image to your tmpdir, moves it so that the extension is valid
+    prints the path its downloaded to and puts the path on your clipboard
+    """
+    if url == "":
+        click.echo("No content on your clipboard!", err=True)
+        sys.exit(1)
+
+    # probably ran twice and the URL is already downloaded?
+    # leave the path on my clipboard as is
+    if not os.path.exists(url):
+        r = requests.get(url, stream=True)
+        assert r.status_code == 200
+
+        tmpdir: str = tempfile.mkdtemp()
+        write_to = os.path.join(tmpdir, url_filename(url))
+
+        with open(write_to, "wb") as f:
+            for chunk in r:
+                f.write(chunk)
+
+        clipboard.clipcopy(write_to)
+        click.echo(write_to)
+
+
+if __name__ == "__main__":
+    main()

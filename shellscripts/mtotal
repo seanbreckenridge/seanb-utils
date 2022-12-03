@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+usage() {
+	echo 'Usage: mtotal <FILE...>
+
+given a bunch of media FILEs, gives the total duration in minutes'
+	exit "${1:-0}"
+}
+
+if [[ "$1" == "-h" ]]; then
+	usage
+fi
+
+if [[ -z "$1" ]]; then
+	echo 'Error: No media files provided' >&2
+	usage 1
+fi
+
+havecmd -v bc || exit $?
+havecmd -V 'This is installed as part of ffmpeg' ffprobe || exit $?
+havecmd -V 'See https://www.gnu.org/software/datamash/download/' datamash || exit $?
+
+set -e
+set -o pipefail
+
+TOTAL_SECS="$(mduration "$@" | cut -d's' -f1 | datamash sum 1)"
+bc <<<"scale=2; ${TOTAL_SECS}/60"

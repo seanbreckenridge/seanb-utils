@@ -15,3 +15,12 @@ Python wrapper to call out to notify shell script
 loads(jsonstr: str, **kwargs: Any) -> Any
 dumps(obj: Any, minified: bool = False, default: Optional[Any] = None, **kwargs: Any) -> str
 ```
+
+`seanb.clipboard`: Python wrappers for `clipcopy` and `clippaste`:
+
+```python
+clipcopy(data: str) -> None
+Sends 'data' to 'clipcopy'; saving to your clipboard
+clippaste() -> str
+Paste text from your clipboard
+```

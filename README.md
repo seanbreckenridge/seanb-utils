@@ -1,11 +1,5 @@
 scripts extracted from my [dotfiles](https://github.com/seanbreckenridge/dotfiles), see [index](#script-index)
 
-## WIP:
-
-Need to go through the process of actually adding all scripts I want to here, which involves adding checks for dependencies/help text to some of them. For now, see <https://sean.fish/d/?dark>
-
----
-
 This includes:
 
 - Pure utility/wrangling scripts like `lower`, `upper`, `chomp`, `rcut`, `tally`, `unique`, `average`; which help process outputs of other commands, which are commonly used by other shellscripts I put up on other repositories -- hence the reason to make this repo so they're easily installable
@@ -16,15 +10,9 @@ This includes:
 # TODO: ADD:
 
 - html-head
-- img-download
 - ix
-- json-compress
-- maverage
-- mduration
-- mtotal
 - openurl
 - openurls
-- rread
 
 Other stuff from my [shortcuts.toml](https://sean.fish/d/shortcuts.toml?redirect) file
 
@@ -124,6 +112,11 @@ Requires `python 3.8+`/`golang` to install:
   - `group-and-termgraph` - takes lines of data and groups/graphs it using [termgraph](https://github.com/mkaz/termgraph). Sort of like a fancy 'sort | uniq -c | sort -n'
   - `epochdisplay` - given one or more epoch timestamps (`date +"%s"`) prints a readable date. If no args are given, reads from STDIN
   - `epochguess` - reads anything from STDIN. convert any epoch timestamps that looks like a datetime to local-readable timestamps
+- Media
+  - `mduration` - prints the duration of a media file (movie/audio)
+  - `mtotal` - given a bunch of media files, gives the total duration in minutes
+  - `img-download` - downloads an image from your clipboard to your tmpdir, moves it so that the extension is valid
+  - `list-movies`/`list-music` - lists any music/movies in the current directory recursively. any additional args are passed onto [`fd`](https://github.com/sharkdp/fd), e.g. `list-music -X mduration`
 - Others:
   - `shebang` - creates a script with the given shebang. If a known language, adds a basic template
   - `gifme` - Creates a gif from a (section of a) video file. Lets you specify start/end times and an fps for the gif to run at

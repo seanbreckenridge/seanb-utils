@@ -19,3 +19,12 @@ perl -E 'print "`"x3, "python", "\n"'
 python3 -c 'from seanb.jsonfast import loads, dumps; help(loads); help(dumps)' | grep -v 'Help on function' | chomp
 perl -E 'print "`"x3'
 ```
+
+`seanb.clipboard`: Python wrappers for `clipcopy` and `clippaste`:
+
+```
+>>>PMARK
+perl -E 'print "`"x3, "python", "\n"'
+python3 -c 'from seanb.clipboard import clipcopy, clippaste; help(clipcopy); help(clippaste)' | grep -v 'Help on function' | chomp
+perl -E 'print "`"x3'
+```
