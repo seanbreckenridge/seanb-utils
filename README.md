@@ -98,6 +98,7 @@ Requires `python 3.8+`/`golang` to install:
 
 - Utility Scripts
   - `havecmd` - command to check if commands are available
+  - `openurl`/`openurls` - cross platform URL opener
   - `dir-size` - prints the total size of a directory
   - `symlink` - a helper script to make a symlink since I always forget how to
 - File Formats

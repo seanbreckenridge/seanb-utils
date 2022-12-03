@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+
+usage() {
+	echo "Usage:
+echo 'https://...' | openurl
+openurl [-h] 'https://...']
+
+Open a URL in your browser
+
+The BROWSER environment variable must be set to browsers to use, parsed
+with python's os.pathsep: https://docs.python.org/3/library/webbrowser.html
+
+On termux, this requires installing the termux API package:
+https://github.com/termux/termux-api-package#readme
+
+A URL can be passed as the first argument or piped into openurl"
+	exit "${1:-0}"
+}
+
+if [[ "$1" == '-h' ]]; then
+	usage 1
+fi
+
+main() {
+	local URL OS
+
+	if [[ -z "$BROWSER" ]]; then
+		# shellcheck disable=SC2016
+		echo -e 'Error: The $BROWSER environment variable must be set. e.g. in your shell profile
+
+export BROWSER="firefox-developer-edition:google-chrome"\n'
+		usage 1
+	fi
+	# if no URL was passed, read the first line from STDIN
+	URL="${1:-$(head -n 1)}"
+
+	# if misconfigured, prevent this from looping infinitely
+	if [[ "$BROWSER" == 'openurl' ]]; then
+		# shellcheck disable=SC2016
+		printf '$BROWSER cant be openurl, exiting\n'
+		return 1
+	fi
+
+	# https://github.com/seanbreckenridge/ttt
+	command -v tttlog >/dev/null 2>&1 && tttlog "openurl $URL"
+	# print the URL back to STDOUT
+	printf '%s\n' "$URL"
+
+	OS="${ON_OS:-$(on_machine)}"
+	case "${OS}" in
+	linux* | windows*)
+		setsid -f python3 -m webbrowser -t "$URL" >/dev/null
+		;;
+	mac*)
+		exec python3 -m webbrowser -t "$URL"
+		;;
+	android_termux*)
+		havecmd -V 'install the termux API package: https://github.com/termux/termux-api-package#readme' termux-open-url || return $?
+		exec termux-open-url "$URL"
+		;;
+	*)
+		printf 'Unknown Operating System: %s\nAttempting open with "python3 -m webbrowser"' "$OS"
+		exec python3 -m webbrowser -t "$URL"
+		;;
+	esac
+}
+
+main "$@" || exit $?
