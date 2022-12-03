@@ -28,6 +28,7 @@ deps-base:
 	@$(HAVECMD_LOCAL) -v sed
 	@$(HAVECMD_LOCAL) -v find
 	@$(HAVECMD_LOCAL) -v grep
+	@$(HAVECMD_LOCAL) -v git
 	@$(HAVECMD_LOCAL) -v gcc
 	@# more opinionated stuff thats used in lots of scripts here
 	@$(HAVECMD_LOCAL) -V 'optional/recommended install' rsync || true

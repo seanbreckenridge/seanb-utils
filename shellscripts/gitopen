@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+havecmd -V 'Install from https://github.com/paulirish/git-open' git-open || exit $?
+
+main() {
+	local url
+	in-gitdir || {
+		echo 'gitopen: Not in a git directory' >&2
+		return 1
+	}
+	url="$(git open --print)" || return $?
+	exec openurl "$url"
+}
+
+main || exit $?

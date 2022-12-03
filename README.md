@@ -112,6 +112,11 @@ Requires `python 3.8+`/`golang` to install:
   - `group-and-termgraph` - takes lines of data and groups/graphs it using [termgraph](https://github.com/mkaz/termgraph). Sort of like a fancy 'sort | uniq -c | sort -n'
   - `epochdisplay` - given one or more epoch timestamps (`date +"%s"`) prints a readable date. If no args are given, reads from STDIN
   - `epochguess` - reads anything from STDIN. convert any epoch timestamps that looks like a datetime to local-readable timestamps
+- Git
+  - `gitopen` - opens the current git repository/branch in your browser
+  - Helpers that return `0` if the condition is met, they're used like: `in-gitdir && command_do_something`
+    - `in-gitdir` - currently in a git directory
+    - `has-git-remote` - has a `git remote --verbose`
 - Media
   - `mduration` - prints the duration of a media file (movie/audio)
   - `mtotal` - given a bunch of media files, gives the total duration in minutes
@@ -122,9 +127,6 @@ Requires `python 3.8+`/`golang` to install:
   - `gifme` - Creates a gif from a (section of a) video file. Lets you specify start/end times and an fps for the gif to run at
   - `ix` - terminal pastebin replacement -- anything piped to STDIN gets uploaded to <http://ix.io> and a link is copied to your clipboard
   - `html-head`: a script to generate `<head>` tags for generated HTML, I often use this like: `pandoc README.md | html-head -a css-dark-mode -a css-pre-wrap | remsync-html-from-stdin` to convert some local markdown file to a basic dark-mode webpage and publish it onto my website with [`remsync`](https://github.com/seanbreckenridge/vps/blob/master/remsync)
-  - `git` - these are helpers that return `0` if the condition is met, they're used like: `in-gitdir && command_do_something`
-    - `in-gitdir` - currently in a git directory
-    - `has-git-remote` - has a `git remote --verbose`
 
 Cross Platform Helpers - these use [on_machine](https://github.com/seanbreckenridge/on_machine) to run different commands based on what operating system you're on.
 
