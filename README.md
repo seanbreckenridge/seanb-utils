@@ -119,10 +119,11 @@ Requires `python 3.8+`/`golang` to install:
 - Data Wrangling
   - `lower`/`upper` - converts all text from STDIN to lowercase/uppercase
   - `capitalize` - 'capitalizes' (first letter of) input, e.g. WORD -> Word; word -> Word
+  - `sort-by-last-col` - sorts text by last column of text; columns can vary in length
   - `tally` - shorthand for 'sort | uniq -c | sort -n'
   - `group-and-termgraph` - takes lines of data and groups/graphs it using [termgraph](https://github.com/mkaz/termgraph). Sort of like a fancy 'sort | uniq -c | sort -n'
   - `epochdisplay` - given one or more epoch timestamps (`date +"%s"`) prints a readable date. If no args are given, reads from STDIN
-  - `epochguess` - reads anything from STDIN. convert any epoch timestamps that looks like a datetime to a date, convert them to local-readable timestamps
+  - `epochguess` - reads anything from STDIN. convert any epoch timestamps that looks like a datetime to local-readable timestamps
 - Others:
   - `shebang` - creates a script with the given shebang. If a known language, adds a basic template
   - `gifme` - Creates a gif from a (section of a) video file. Lets you specify start/end times and an fps for the gif to run at

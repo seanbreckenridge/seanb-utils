@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# sort text by last column (columns can vary in length)
+# any additional arguments are passed to awk (e.g. if you want to set FS (e.g. field separator))
+set -o pipefail
+awk "$@" '{print $NF,$0}' | sort -n | cut -f2- -d' '

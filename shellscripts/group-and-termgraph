@@ -23,14 +23,17 @@ havecmd -v awk || exit $?
 havecmd -V 'Install from https://github.com/seanbreckenridge/chomp' 'chomp' || exit $?
 havecmd -V 'Install with "pip install termgraph"' 'termgraph' || exit $?
 
+# this uses '|@|' as a special marker to replace commas with
+# and then replaces them afterwards once things have been graphed
 # to explain
-# remove extra spaces, count using 'uniq -c', and replace commas (used as a delimtier for termgraph) with underscores
-chomp | sort | uniq -c | chomp | sed -e 's/,/_/g' |
+# remove extra spaces, count using 'uniq -c', and replace commas (used as a delimtier for termgraph) with '|@|'
+chomp | sort | uniq -c | chomp | sed -e 's/,/|@|/g' |
 	# move the first column (count) to the end, print the rest of the columns first
 	awk '{for(i=2;i<=NF;i++){printf "%s ", $i}; printf $1; printf "\n"}' |
 	# replace the last space with a comma (the termgraph delimiter)
 	rev | sed -e 's/ /,/' | rev |
 	# graph with termgraph
 	termgraph --delim ',' "$@" |
-	# remove extra lines termgraph prints, sort termgraph by the last column
-	chomp | awk '{print $NF,$0}' | sort -n | cut -f2- -d' '
+	# remove extra lines termgraph prints, reset commas that were there in original text
+	# sort by last column
+	chomp | sed -e 's/|@|/,/g' | sort-by-last-col
