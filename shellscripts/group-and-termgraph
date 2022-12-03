@@ -20,12 +20,13 @@ set -o pipefail
 
 havecmd -v rev || exit $?
 havecmd -v awk || exit $?
+havecmd -v sed || exit $?
 havecmd -V 'Install from https://github.com/seanbreckenridge/chomp' 'chomp' || exit $?
 havecmd -V 'Install with "pip install termgraph"' 'termgraph' || exit $?
 
 # this uses '|@|' as a special marker to replace commas with
 # and then replaces them afterwards once things have been graphed
-# to explain
+#
 # remove extra spaces, count using 'uniq -c', and replace commas (used as a delimtier for termgraph) with '|@|'
 chomp | sort | uniq -c | chomp | sed -e 's/,/|@|/g' |
 	# move the first column (count) to the end, print the rest of the columns first
