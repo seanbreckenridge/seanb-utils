@@ -2,8 +2,8 @@ scripts extracted from my [dotfiles](https://github.com/seanbreckenridge/dotfile
 
 This includes:
 
-- Pure utility/wrangling scripts like `lower`, `upper`, `chomp`, `rcut`, `tally`, `unique`, `average`; which help process outputs of other commands, which are commonly used by other shellscripts I put up on other repositories -- hence the reason to make this repo so they're easily installable
-- Some helper/conversion scripts like `to-png`, `to-jpeg`, `rotate-img`, `tq` (`jq` for `toml`)
+- Pure utility/wrangling scripts like [`lower`](./shellscripts/lower), [`upper`](./shellscripts/upper), [`chomp`](./shellscripts/chomp), [`rcut`](./shellscripts/rcut), [`tally`](./shellscripts/tally), [`unique`](./shellscripts/unique), [`average`](./shellscripts/average); which help process outputs of other commands, which are commonly used by other shellscripts I put up on other repositories -- hence the reason to make this repo so they're easily installable
+- Some helper/conversion scripts like [`to-png`](./shellscripts/to-png), [`to-jpeg`](./shellscripts/to-jpeg), [`rotate-img`](./shellscripts/rotate-img), [`tq`](./shellscripts/tq) (`jq` for `toml`)
 - Scripts that provide platform-independent interaction with clipboard/prompting user for input/sending notifications
 - Other random scripts which have more niche uses, but I feel are worth to publish here, with checks for required commands at runtime
 
@@ -88,49 +88,49 @@ Requires `python 3.8+`/`golang` to install:
 #### shellscripts
 
 - File/Utility Scripts
-  - `havecmd` - command to check if commands are available
-  - `dir-size` - prints the total size of a directory
-  - `symlink` - a helper script to make a symlink since I always forget how to
-  - `openurl`/`openurls` - cross platform URL opener
-  - `get-extension`, `remove-extension`, `replace-extension` - helpers to create output filename strings
-  - Lots of date shorthands: `daystamp`, `daystamp_`, `epoch`, `month`, `weekday`, `year`
-  - `path`: prints your `$PATH`, separated by newlines
+  - [`havecmd`](./shellscripts/havecmd) - command to check if commands are available
+  - [`dir-size`](./shellscripts/dir-size) - prints the total size of a directory
+  - [`symlink`](./shellscripts/symlink) - a helper script to make a symlink since I always forget how to
+  - [`openurl`](./shellscripts/openurl)/[`openurls`](./shellscripts/openurls) - cross platform URL opener
+  - [`get-extension`](./shellscripts/get-extension), [`remove-extension`](./shellscripts/remove-extension), [`replace-extension`](./shellscripts/replace-extension) - helpers to create output filename strings
+  - Lots of date shorthands: [`daystamp`](./shellscripts/daystamp), [`daystamp_`](./shellscripts/daystamp_), [`epoch`](./shellscripts/epoch), [`month`](./shellscripts/month), [`weekday`](./shellscripts/weekday), [`year`](./shellscripts/year)
+  - [`path`](./shellscripts/path): prints your `$PATH`, separated by newlines
 - File Formats
-  - `json-compress` - compresses JSON (removes extra spaces/newlines), only writes to the file if size of data was changed
-  - `tq` - converts a TOML file to JSON, usually piped to [jq](https://github.com/stedolan/jq). e.g.,: `tq <data.toml | jq '.conf'`
-  - `to-png`/`to-jpg` - converts an image to a png/jpg
-  - `img-download` - downloads an image from your clipboard to your tmpdir, moves it so that the extension is valid
+  - [`json-compress`](./shellscripts/json-compress) - compresses JSON (removes extra spaces/newlines), only writes to the file if size of data was changed
+  - [`tq`](./shellscripts/tq) - converts a TOML file to JSON, usually piped to [jq](https://github.com/stedolan/jq). e.g.,: `tq <data.toml | jq '.conf'`
+  - [`to-png`](./shellscripts/to-png)/[`to-jpg`](./shellscripts/to-jpg) - converts an image to a png/jpg
+  - [`img-download`](./shellscripts/img-download) - downloads an image from your clipboard to your tmpdir, moves it so that the extension is valid
 - Data Wrangling
-  - `lower`/`upper` - converts all text from STDIN to lowercase/uppercase
-  - `prefix`/`suffix` - prepends/adds a string to the beginning/end of each line from STDIN
-  - `capitalize` - 'capitalizes' (first letter of) input, e.g. WORD -> Word; word -> Word
-  - `average` - finds the mean of numerical data piped from STDIN
-  - `rcut` - `cut`, by indexing from the right instead
-  - `sort-by-last-col` - sorts text by last column of text; columns can vary in length
-  - `tally` - shorthand for 'sort | uniq -c | sort -n'
-  - `unique` - `uniq`, but doesn't require input to be sorted
-  - `group-and-termgraph` - takes lines of data and groups/graphs it using [termgraph](https://github.com/mkaz/termgraph). Sort of like a fancy 'sort | uniq -c | sort -n'
-  - `epochdisplay` - given one or more epoch timestamps (`date +"%s"`) prints a readable date. If no args are given, reads from STDIN
-  - `epochguess` - reads anything from STDIN. convert any epoch timestamps that looks like a datetime to local-readable timestamps
+  - [`lower`](./shellscripts/lower)/[`upper`](./shellscripts/upper) - converts all text from STDIN to lowercase/uppercase
+  - [`prefix`](./shellscripts/prefix)/[`suffix`](./shellscripts/suffix) - prepends/adds a string to the beginning/end of each line from STDIN
+  - [`capitalize`](./shellscripts/capitalize) - 'capitalizes' (first letter of) input, e.g. WORD -> Word; word -> Word
+  - [`average`](./shellscripts/average) - finds the mean of numerical data piped from STDIN
+  - [`rcut`](./shellscripts/rcut) - `cut`, by indexing from the right instead
+  - [`sort-by-last-col`](./shellscripts/sort-by-last-col) - sorts text by last column of text; columns can vary in length
+  - [`unique`](./shellscripts/unique) - `uniq`, but doesn't require input to be sorted
+  - [`tally`](./shellscripts/tally) - shorthand for 'sort | uniq -c | sort -n'
+  - [`group-and-termgraph`](./shellscripts/group-and-termgraph) - takes lines of data and groups/graphs it using [termgraph](https://github.com/mkaz/termgraph). Sort of like a fancy 'sort | uniq -c | sort -n'
+  - [`epochdisplay`](./shellscripts/epochdisplay) - given one or more epoch timestamps (`date +"%s"`) prints a readable date. If no args are given, reads from STDIN
+  - [`epochguess`](./shellscripts/epochguess) - reads anything from STDIN. convert any epoch timestamps that looks like a datetime to local-readable timestamps
 - Git
-  - `gitopen` - opens the current git repository/branch in your browser
+  - [`gitopen`](./shellscripts/gitopen) - opens the current git repository/branch in your browser
   - Helpers that return `0` if the condition is met, they're used like: `in-gitdir && command_do_something`
-    - `in-gitdir` - currently in a git directory
-    - `has-git-remote` - has a `git remote --verbose`
+    - [`in-gitdir`](./shellscripts/in-gitdir) - currently in a git directory
+    - [`has-git-remote`](./shellscripts/has-git-remote) - has a `git remote --verbose`
 - Media
-  - `mduration` - prints the duration of a media file (movie/audio)
-  - `mtotal` - given a bunch of media files, gives the total duration in minutes
-  - `image-dimensions` - prints the width/height for images passed as arguments
-  - `list-movies`/`list-music` - lists any music/movies in the current directory recursively. any additional args are passed onto [`fd`](https://github.com/sharkdp/fd), e.g. `list-music -X mduration`
+  - [`mduration`](./shellscripts/mduration) - prints the duration of a media file (movie/audio)
+  - [`mtotal`](./shellscripts/mtotal) - given a bunch of media files, gives the total duration in minutes
+  - [`image-dimensions`](./shellscripts/image-dimensions) - prints the width/height for images passed as arguments
+  - [`list-movies`](./shellscripts/list-movies)/[`list-music`](./shellscripts/list-music) - lists any music/movies in the current directory recursively. any additional args are passed onto [`fd`](https://github.com/sharkdp/fd), e.g. `list-music -X mduration`
 - Others:
-  - `shebang` - creates a script with the given shebang. If a known language, adds a basic template
-  - `gifme` - Creates a gif from a (section of a) video file. Lets you specify start/end times and an fps for the gif to run at
-  - `ix` - terminal pastebin replacement -- anything piped to STDIN gets uploaded to <http://ix.io> and a link is copied to your clipboard
-  - `html-head`: a script to generate `<head>` tags for generated HTML, I often use this like: `pandoc README.md | html-head -a css-dark-mode -a css-pre-wrap | remsync-html-from-stdin` to convert some local markdown file to a basic dark-mode webpage and publish it onto my website with [`remsync`](https://github.com/seanbreckenridge/vps/blob/master/remsync)
+  - [`shebang`](./shellscripts/shebang) - creates a script with the given shebang. If a known language, adds a basic template
+  - [`gifme`](./shellscripts/gifme) - Creates a gif from a (section of a) video file. Lets you specify start/end times and an fps for the gif to run at
+  - [`ix`](./shellscripts/ix) - terminal pastebin replacement -- anything piped to STDIN gets uploaded to <http://ix.io> and a link is copied to your clipboard
+  - [`html-head`](./shellscripts/html-head): a script to generate `<head>` tags for generated HTML, I often use this like: `pandoc README.md | html-head -a css-dark-mode -a css-pre-wrap | remsync-html-from-stdin` to convert some local markdown file to a basic dark-mode webpage and publish it onto my website with [`remsync`](https://github.com/seanbreckenridge/vps/blob/master/remsync)
 
 Cross Platform Helpers - these use [on_machine](https://github.com/seanbreckenridge/on_machine) to run different commands based on what operating system you're on.
 
-- `clipcopy`/`clippaste` - save to/read from clipboard
-- `input-dialog` - prompts the user to enter some text with an OS-dialog
-- `notify` - sends a OS notification (`notify-send` on linux/`applescript` on mac)
-- `picker` - prompts user to pick from lines received from STDIN
+- [`clipcopy`](./shellscripts/clipcopy)/[`clippaste`](./shellscripts/clippaste) - save to/read from clipboard
+- [`input-dialog`](./shellscripts/input-dialog) - prompts the user to enter some text with an OS-dialog
+- [`notify`](./shellscripts/notify) - sends a OS notification (`notify-send` on linux/`applescript` on mac)
+- [`picker`](./shellscripts/picker) - prompts user to pick from lines received from STDIN
