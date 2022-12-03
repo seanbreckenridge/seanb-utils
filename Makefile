@@ -6,7 +6,7 @@ HAVECMD_LOCAL="${CURDIR}/shellscripts/havecmd"
 doctor: doctor-path deps-base check-lang
 	@echo doctor: done ✓
 
-install: doctor-path deps-base install-shellscripts check-lang exists-install python-install golang-install
+install: doctor-path deps-base install-shellscripts check-lang python-install golang-install
 	@echo install: done ✓
 
 doctor-path:

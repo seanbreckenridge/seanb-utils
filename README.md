@@ -77,23 +77,24 @@ Requires `python 3.8+`/`golang` to install:
 
 `make install` installs:
 
-- The `./python-src` namespace package, which includes helper functions, see [python-src/README.md](./python-src/README.md). Also installs required python libraries for any python scripts here
-- `go` - <https://go.dev/doc/install>
+- a few `go` CLI tools - (See <https://go.dev/doc/install> for install instructions)
   - [`newest`](https://github.com/seanbreckenridge/newest) - print most recently modified file in directory
   - [`chomp`](https://github.com/seanbreckenridge/chomp) - remove whitespace/empty lines from command output
   - [`on_machine`](https://github.com/seanbreckenridge/on_machine) - detect what operating system/machine you're currently on
-- [`exists`](https://github.com/seanbreckenridge/exists) - pipe to test if files exist
+- The `./python-src` namespace package, which includes helper functions, see [python-src/README.md](./python-src/README.md). Also installs required python libraries for any python scripts here
 
 ... and shellscripts:
 
 #### shellscripts
 
-- Utility Scripts
+- File/Utility Scripts
   - `havecmd` - command to check if commands are available
-  - `openurl`/`openurls` - cross platform URL opener
   - `dir-size` - prints the total size of a directory
   - `symlink` - a helper script to make a symlink since I always forget how to
+  - `openurl`/`openurls` - cross platform URL opener
   - `get-extension`, `remove-extension`, `replace-extension` - helpers to create output filename strings
+  - Lots of date shorthands: `daystamp`, `daystamp_`, `epoch`, `month`, `weekday`, `year`
+  - `path`: prints your `$PATH`, separated by newlines
 - File Formats
   - `json-compress` - compresses JSON (removes extra spaces/newlines), only writes to the file if size of data was changed
   - `tq` - converts a TOML file to JSON, usually piped to [jq](https://github.com/stedolan/jq). e.g.,: `tq <data.toml | jq '.conf'`
@@ -103,8 +104,11 @@ Requires `python 3.8+`/`golang` to install:
   - `lower`/`upper` - converts all text from STDIN to lowercase/uppercase
   - `prefix`/`suffix` - prepends/adds a string to the beginning/end of each line from STDIN
   - `capitalize` - 'capitalizes' (first letter of) input, e.g. WORD -> Word; word -> Word
+  - `average` - finds the mean of numerical data piped from STDIN
+  - `rcut` - `cut`, by indexing from the right instead
   - `sort-by-last-col` - sorts text by last column of text; columns can vary in length
   - `tally` - shorthand for 'sort | uniq -c | sort -n'
+  - `unique` - `uniq`, but doesn't require input to be sorted
   - `group-and-termgraph` - takes lines of data and groups/graphs it using [termgraph](https://github.com/mkaz/termgraph). Sort of like a fancy 'sort | uniq -c | sort -n'
   - `epochdisplay` - given one or more epoch timestamps (`date +"%s"`) prints a readable date. If no args are given, reads from STDIN
   - `epochguess` - reads anything from STDIN. convert any epoch timestamps that looks like a datetime to local-readable timestamps

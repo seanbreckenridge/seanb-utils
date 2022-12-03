@@ -1,0 +1,3 @@
+#!/bin/sh
+havecmd -V 'See https://www.gnu.org/software/datamash/download/' datamash || exit $?
+exec datamash mean 1 "$@"
