@@ -61,8 +61,8 @@ To check for dependencies/path issues, run `make`
 To install, run `make install`:
 
 ```bash
-git clone https://github.com/seanbreckenridge/seanb-core
-cd ./seanb-core
+git clone https://github.com/seanbreckenridge/core
+cd ./core
 make  # check for dependencies
 make install
 ```
@@ -70,7 +70,7 @@ make install
 Or use [`bpkg`](https://github.com/bpkg/bpkg) to automate the manual `git clone`/`cd`/`make`:
 
 ```
-bpkg install -g seanbreckenridge/seanb-core
+bpkg install -g seanbreckenridge/core
 ```
 
 To setup `go` to build packages, add something like this to your `.zshrc`/`.bashrc`:
