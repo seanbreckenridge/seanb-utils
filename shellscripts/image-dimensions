@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+if [[ -z "$1" ]]; then
+	echo 'image-dimensions: must provide at least one file to get image dimensions for' >&2
+	exit 1
+fi
+
+set -e
+set -o pipefail
+
+havecmd -V 'See https://stedolan.github.io/jq/' jq || exit $?
+havecmd -V 'See https://exiftool.org/install.html' 'exiftool' || exit $?
+
+for f in "$@"; do
+	[[ -f "$f" ]] || {
+		printf 'File %s does not exist\n' "$f" >&2
+		exit 1
+	}
+done
+
+exiftool -j "$@" 2>/dev/null | jq '.[] | "\(.ImageSize) \(.SourceFile)"' -r
