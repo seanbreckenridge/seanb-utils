@@ -1,4 +1,4 @@
-scripts extracted from my [dotfiles](https://github.com/seanbreckenridge/dotfiles), see [index](#script-index)
+Scripts extracted from my [dotfiles](https://github.com/seanbreckenridge/dotfiles), see [index](#script-index)
 
 This includes:
 
@@ -100,6 +100,8 @@ Requires `python 3.8+`/`golang` to install:
   - [`tq`](./shellscripts/tq) - converts a TOML file to JSON, usually piped to [jq](https://github.com/stedolan/jq). e.g.,: `tq <data.toml | jq '.conf'`
   - [`to-png`](./shellscripts/to-png)/[`to-jpg`](./shellscripts/to-jpg) - converts an image to a png/jpg
   - [`img-download`](./shellscripts/img-download) - downloads an image from your clipboard to your tmpdir, moves it so that the extension is valid
+  - [`shebang`](./shellscripts/shebang) - creates a script with the given shebang. If a known language, adds a basic template
+  - [`html-head`](./shellscripts/html-head): a script to generate `<head>` tags for generated HTML, I often use this like: `pandoc README.md | html-head -a css-dark-mode -a css-pre-wrap | remsync-html-from-stdin` to convert some local markdown file to a basic dark-mode webpage and publish it onto my website with [`remsync`](https://github.com/seanbreckenridge/vps/blob/master/remsync)
 - Data Wrangling
   - [`lower`](./shellscripts/lower)/[`upper`](./shellscripts/upper) - converts all text from STDIN to lowercase/uppercase
   - [`prefix`](./shellscripts/prefix)/[`suffix`](./shellscripts/suffix) - prepends/adds a string to the beginning/end of each line from STDIN
@@ -121,12 +123,10 @@ Requires `python 3.8+`/`golang` to install:
   - [`mduration`](./shellscripts/mduration) - prints the duration of a media file (movie/audio)
   - [`mtotal`](./shellscripts/mtotal) - given a bunch of media files, gives the total duration in minutes
   - [`image-dimensions`](./shellscripts/image-dimensions) - prints the width/height for images passed as arguments
+  - [`gifme`](./shellscripts/gifme) - Creates a gif from a (section of a) video file. Lets you specify start/end times and an fps for the gif to run at
   - [`list-movies`](./shellscripts/list-movies)/[`list-music`](./shellscripts/list-music) - lists any music/movies in the current directory recursively. any additional args are passed onto [`fd`](https://github.com/sharkdp/fd), e.g. `list-music -X mduration`
 - Others:
-  - [`shebang`](./shellscripts/shebang) - creates a script with the given shebang. If a known language, adds a basic template
-  - [`gifme`](./shellscripts/gifme) - Creates a gif from a (section of a) video file. Lets you specify start/end times and an fps for the gif to run at
   - [`ix`](./shellscripts/ix) - terminal pastebin replacement -- anything piped to STDIN gets uploaded to <http://ix.io> and a link is copied to your clipboard
-  - [`html-head`](./shellscripts/html-head): a script to generate `<head>` tags for generated HTML, I often use this like: `pandoc README.md | html-head -a css-dark-mode -a css-pre-wrap | remsync-html-from-stdin` to convert some local markdown file to a basic dark-mode webpage and publish it onto my website with [`remsync`](https://github.com/seanbreckenridge/vps/blob/master/remsync)
 
 Cross Platform Helpers - these use [on_machine](https://github.com/seanbreckenridge/on_machine) to run different commands based on what operating system you're on.
 
