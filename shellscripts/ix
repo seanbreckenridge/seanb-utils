@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+set -e
+set -o pipefail
+
+usage() {
+
+	echo 'Usage: command | ix
+Terminal pastebin replacement
+Flags:
+	-v: prints what it received as STDIN back to STDOUT
+
+Can be used to send lines from vim to ix like:
+<number of lines>!!ix -v
+See https://exobrain.sean.fish/programming/languages/shell_tools/vim/magic_wands/'
+	exit "${1:-0}"
+}
+
+declare verbose=0
+while getopts "vh" OPT; do
+	case "$OPT" in
+	v)
+		verbose=1
+		;;
+	h)
+		usage 0
+		;;
+	*)
+		printf 'Unknown flag %s\n' "$OPT" >&2
+		usage 1
+		;;
+	esac
+done
+
+declare stdin
+
+stdin="$(cat)"
+((verbose)) && cat <<<"${stdin}"
+
+declare url
+url="$(curl -s -F 'f:1=<-' http://ix.io <<<"${stdin}")" || {
+	notify "Failed to make request to http://ix.io"
+	exit 1
+}
+printf '%s' "${url}" | clipcopy
+notify "Copied link to clipboard" "${url}"

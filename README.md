@@ -10,7 +10,6 @@ This includes:
 ### TODO: ADD:
 
 - html-head
-- ix
 - openurl
 - openurls
 
@@ -121,6 +120,7 @@ Requires `python 3.8+`/`golang` to install:
 - Others:
   - `shebang` - creates a script with the given shebang. If a known language, adds a basic template
   - `gifme` - Creates a gif from a (section of a) video file. Lets you specify start/end times and an fps for the gif to run at
+  - `ix` - terminal pastebin replacement -- anything piped to STDIN gets uploaded to <http://ix.io> and a link is copied to your clipboard
   - `git` - these are helpers that return `0` if the condition is met, they're used like: `in-gitdir && command_do_something`
     - `in-gitdir` - currently in a git directory
     - `has-git-remote` - has a `git remote --verbose`
