@@ -106,6 +106,7 @@ Requires `python 3.8+`/`golang` to install:
   - `tq` - converts a TOML file to JSON, usually piped to [jq](https://github.com/stedolan/jq). e.g.,: `tq <data.toml | jq '.conf'`
 - Data Wrangling
   - `lower`/`upper` - converts all text from STDIN to lowercase/uppercase
+  - `prefix`/`suffix` - prepends/adds a string to the beginning/end of each line from STDIN
   - `capitalize` - 'capitalizes' (first letter of) input, e.g. WORD -> Word; word -> Word
   - `sort-by-last-col` - sorts text by last column of text; columns can vary in length
   - `tally` - shorthand for 'sort | uniq -c | sort -n'

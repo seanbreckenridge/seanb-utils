@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e
+
+usage() {
+	echo 'Usage: command | prefix <STRING...>
+
+Adds STRING to the front of every line from command'
+	exit "${1:-0}"
+}
+
+main() {
+	if [[ "$1" == "-h" ]]; then
+		usage 0
+	fi
+	if [[ -z "$1" ]]; then
+		echo 'Must provide STRING to prefix lines with' >&2
+		usage 1
+	fi
+	export PREFIX="$*"
+	exec perl -pe 's/^/$ENV{PREFIX}/'
+}
+
+main "$@" || exit $?

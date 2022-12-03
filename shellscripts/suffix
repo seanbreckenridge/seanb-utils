@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+
+set -e
+
+usage() {
+	echo 'Usage: command | suffix <STRING...>
+
+Adds STRING to the end of every line from command'
+	exit "${1:-0}"
+}
+
+main() {
+	if [[ "$1" == "-h" ]]; then
+		usage 0
+	fi
+	if [[ -z "$1" ]]; then
+		echo 'Must provide STRING to suffix lines with' >&2
+		usage 1
+	fi
+	export SUFFIX="$*"
+	exec perl -pe 's/$/$ENV{SUFFIX}/'
+}
+
+main "$@" || exit $?
