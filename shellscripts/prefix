@@ -9,6 +9,8 @@ Adds STRING to the front of every line from command'
 	exit "${1:-0}"
 }
 
+havecmd -v perl || exit $?
+
 main() {
 	if [[ "$1" == "-h" ]]; then
 		usage 0
