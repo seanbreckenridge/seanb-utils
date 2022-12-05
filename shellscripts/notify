@@ -34,7 +34,7 @@ fi
 
 # Send Notification!
 
-case "$ON_OS" in
+case "${ON_OS:=$(on_machine)}" in
 linux*)
 	# if user passed arguments which were parsed
 	if (("${#linux_options[@]}" > 1)); then

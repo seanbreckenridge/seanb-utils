@@ -15,7 +15,7 @@ usage() {
 	usage 1
 }
 
-case "$ON_OS" in
+case "${ON_OS:=$(on_machine)}" in
 linux*)
 	havecmd -v rofi || exit $?
 	# use rofi with no list on linux
@@ -29,7 +29,7 @@ mac*)
 	printf '%s' "$RESP"
 	;;
 android_termux*)
-	havecmd -v jq || exit $?
+	havecmd -V 'See https://stedolan.github.io/jq/' jq || exit $?
 	havecmd -V 'install the termux API package: https://github.com/termux/termux-api-package#readme' termux-dialog || exit $?
 	RESP="$(termux-dialog -t "$1")"
 	CODE="$(jq -r .code <<<"$RESP")"

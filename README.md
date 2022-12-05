@@ -23,8 +23,7 @@ This _does not install these_ and requires you to have these available (on your 
 
 Optional/Recommended (some scripts here will fail if these aren't present)
 
-- `rsync`
-- [`rg`](https://github.com/BurntSushi/ripgrep#installation)
+- [`jq`](https://stedolan.github.io/jq/)
 - [`fzf`](https://github.com/junegunn/fzf#installation)
 - [`fd`](https://github.com/sharkdp/fd#installation)
 

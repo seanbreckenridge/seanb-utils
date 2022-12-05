@@ -42,7 +42,7 @@ shift $((OPTIND - 1))
 
 # if this succeeds, it exits the script. Otherwise, uses fzf
 os_specific() {
-	case "$ON_OS" in
+	case "${ON_OS:=$(on_machine)}" in
 	linux*)
 		havecmd -V 'linux picker uses rofi: https://github.com/davatorium/rofi' rofi || return 0
 		declare LINES

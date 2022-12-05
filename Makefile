@@ -31,8 +31,6 @@ deps-base:
 	@$(HAVECMD_LOCAL) -v git
 	@$(HAVECMD_LOCAL) -v gcc
 	@# more opinionated stuff thats used in lots of scripts here
-	@$(HAVECMD_LOCAL) -V 'optional/recommended install' rsync || true
-	@$(HAVECMD_LOCAL) -V 'optional/recommended install; See https://github.com/BurntSushi/ripgrep#installation' rg || true
 	@$(HAVECMD_LOCAL) -V 'optional/recommended install; See https://stedolan.github.io/jq/' jq || true
 	@$(HAVECMD_LOCAL) -V 'optional/recommended install; See https://github.com/sharkdp/fd#installation' fd || true
 	@$(HAVECMD_LOCAL) -V 'optional/recommended install; See https://github.com/junegunn/fzf#installation' fzf || true
