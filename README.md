@@ -127,10 +127,12 @@ Requires `python 3.8+`/`golang` to install:
 - Others:
   - [`ix`](./shellscripts/ix) - terminal pastebin replacement -- anything piped to STDIN gets uploaded to <http://ix.io> and a link is copied to your clipboard
 
-Cross Platform Helpers - these use [on_machine](https://github.com/seanbreckenridge/on_machine) to run different commands based on what operating system you're on.
+Cross Platform Helpers - these use [`on_machine`](https://github.com/seanbreckenridge/on_machine) to run different commands based on what operating system you're on.
 
 - [`openurl`](./shellscripts/openurl)/[`openurls`](./shellscripts/openurls) - URL opener
 - [`clipcopy`](./shellscripts/clipcopy)/[`clippaste`](./shellscripts/clippaste) - save to/read from clipboard
 - [`input-dialog`](./shellscripts/input-dialog) - prompts the user to enter some text with an OS-dialog
 - [`notify`](./shellscripts/notify) - sends a OS notification (`notify-send` on linux/`applescript` on mac)
 - [`picker`](./shellscripts/picker) - prompts user to pick from lines received from STDIN
+
+On [`termux`](https://termux.dev/en/), you need to install the [`termux-api`](https://github.com/termux/termux-api) package.

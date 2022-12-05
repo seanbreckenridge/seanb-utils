@@ -15,7 +15,7 @@ mac*)
 	exec pbpaste
 	;;
 android_termux*)
-	havecmd -V 'install the termux API package: https://github.com/termux/termux-api-package#readme' termux-clipboard-get || exit $?
+	havecmd -V 'install the termux API package: https://github.com/termux/termux-api' termux-clipboard-get || exit $?
 	exec termux-clipboard-get
 	;;
 windows)

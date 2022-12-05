@@ -11,7 +11,7 @@ The BROWSER environment variable must be set to browsers to use, parsed
 with python's os.pathsep: https://docs.python.org/3/library/webbrowser.html
 
 On termux, this requires installing the termux API package:
-https://github.com/termux/termux-api-package#readme
+https://github.com/termux/termux-api
 
 A URL can be passed as the first argument or piped into openurl"
 	exit "${1:-0}"
@@ -55,7 +55,7 @@ export BROWSER="firefox-developer-edition:google-chrome"\n'
 		exec python3 -m webbrowser -t "$URL"
 		;;
 	android_termux*)
-		havecmd -V 'install the termux API package: https://github.com/termux/termux-api-package#readme' termux-open-url || return $?
+		havecmd -V 'install the termux API package: https://github.com/termux/termux-api' termux-open-url || return $?
 		exec termux-open-url "$URL"
 		;;
 	*)

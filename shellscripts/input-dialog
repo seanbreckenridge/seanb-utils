@@ -30,7 +30,7 @@ mac*)
 	;;
 android_termux*)
 	havecmd -V 'See https://stedolan.github.io/jq/' jq || exit $?
-	havecmd -V 'install the termux API package: https://github.com/termux/termux-api-package#readme' termux-dialog || exit $?
+	havecmd -V 'install the termux API package: https://github.com/termux/termux-api' termux-dialog || exit $?
 	RESP="$(termux-dialog -t "$1")"
 	CODE="$(jq -r .code <<<"$RESP")"
 	[[ "$CODE" != -1 ]] && exit 1

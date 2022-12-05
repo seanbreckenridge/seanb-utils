@@ -36,7 +36,7 @@ windows*)
 	printf '%s' "${STDIN}" | clip.exe
 	;;
 android_termux*)
-	havecmd -V 'install the termux API package: https://github.com/termux/termux-api-package#readme' termux-clipboard-set || exit $?
+	havecmd -V 'install the termux API package: https://github.com/termux/termux-api' termux-clipboard-set || exit $?
 	printf '%s' "${STDIN}" | termux-clipboard-set
 	;;
 *)
