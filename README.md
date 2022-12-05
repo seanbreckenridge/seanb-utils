@@ -90,7 +90,7 @@ Requires `python 3.8+`/`golang` to install:
   - [`havecmd`](./shellscripts/havecmd) - command to check if commands are available
   - [`dir-size`](./shellscripts/dir-size) - prints the total size of a directory
   - [`symlink`](./shellscripts/symlink) - a helper script to make a symlink since I always forget how to
-  - [`openurl`](./shellscripts/openurl)/[`openurls`](./shellscripts/openurls) - cross platform URL opener
+  - [`lastdown`](./shellscripts/lastdown)/[`mvlast`](./shellscripts/mvlast) - prints/moves the latest file in your downloads (`$XDG_DOWNLOAD_DIR` or `~/Downloads`) folder
   - [`get-extension`](./shellscripts/get-extension), [`remove-extension`](./shellscripts/remove-extension), [`replace-extension`](./shellscripts/replace-extension) - helpers to create output filename strings
   - Lots of date shorthands: [`daystamp`](./shellscripts/daystamp), [`daystamp_`](./shellscripts/daystamp_), [`epoch`](./shellscripts/epoch), [`month`](./shellscripts/month), [`weekday`](./shellscripts/weekday), [`year`](./shellscripts/year)
   - [`path`](./shellscripts/path): prints your `$PATH`, separated by newlines
@@ -129,6 +129,7 @@ Requires `python 3.8+`/`golang` to install:
 
 Cross Platform Helpers - these use [on_machine](https://github.com/seanbreckenridge/on_machine) to run different commands based on what operating system you're on.
 
+- [`openurl`](./shellscripts/openurl)/[`openurls`](./shellscripts/openurls) - URL opener
 - [`clipcopy`](./shellscripts/clipcopy)/[`clippaste`](./shellscripts/clippaste) - save to/read from clipboard
 - [`input-dialog`](./shellscripts/input-dialog) - prompts the user to enter some text with an OS-dialog
 - [`notify`](./shellscripts/notify) - sends a OS notification (`notify-send` on linux/`applescript` on mac)

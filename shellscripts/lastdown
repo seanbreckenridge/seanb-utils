@@ -1,0 +1,8 @@
+#!/bin/bash
+DOWNLOAD_DIR="${XDG_DOWNLOAD_DIR:-${HOME}/Downloads}"
+if [[ ! -d "$DOWNLOAD_DIR" ]]; then
+	# shellcheck disable=SC2016
+	printf '$XDG_DOWNLOAD_DIR is not set or %s does not exist\n' "$DOWNLOAD_DIR" >&2
+	exit 1
+fi
+exec newest "$@" "${DOWNLOAD_DIR}"

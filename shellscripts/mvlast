@@ -1,0 +1,4 @@
+#!/bin/sh
+# moves the latest file from ~/Downloads to this directory
+FILE="$(lastdown)" || exit 1
+exec mv -v "${FILE}" "./$*"
