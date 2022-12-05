@@ -23,9 +23,9 @@ This _does not install these_ and requires you to have these available (on your 
 
 Optional/Recommended (some scripts here will fail if these aren't present)
 
-- [`jq`](https://stedolan.github.io/jq/)
-- [`fzf`](https://github.com/junegunn/fzf#installation)
-- [`fd`](https://github.com/sharkdp/fd#installation)
+- [`jq`](https://stedolan.github.io/jq/) - command line JSON parser
+- [`fzf`](https://github.com/junegunn/fzf#installation) - fuzzy finder
+- [`fd`](https://github.com/sharkdp/fd#installation) - user-friendly 'find' alternative
 
 Needed for installing/building core utils used in other scripts here:
 
