@@ -68,6 +68,8 @@ ${XDG_DATA_HOME}/go/bin:\
 ${PATH}"
 ```
 
+On [`termux`](https://termux.dev/en/), you need to install the [`termux-api`](https://github.com/termux/termux-api) package (from `F-Droid`)
+
 ## Contents
 
 Requires `python 3.8+`/`golang` to install:
@@ -113,6 +115,12 @@ Requires `python 3.8+`/`golang` to install:
   - [`group-and-termgraph`](./shellscripts/group-and-termgraph) - takes lines of data and groups/graphs it using [termgraph](https://github.com/mkaz/termgraph). Sort of like a fancy 'sort | uniq -c | sort -n'
   - [`epochdisplay`](./shellscripts/epochdisplay) - given one or more epoch timestamps (`date +"%s"`) prints a readable date. If no args are given, reads from STDIN
   - [`epochguess`](./shellscripts/epochguess) - reads anything from STDIN. convert any epoch timestamps that looks like a datetime to local-readable timestamps
+- Cross Platform Helpers - these use [`on_machine`](https://github.com/seanbreckenridge/on_machine) to run different commands based on what operating system you're on
+  - [`openurl`](./shellscripts/openurl)/[`openurls`](./shellscripts/openurls) - URL opener
+  - [`clipcopy`](./shellscripts/clipcopy)/[`clippaste`](./shellscripts/clippaste) - save to/read from clipboard
+  - [`input-dialog`](./shellscripts/input-dialog) - prompts the user to enter some text with an OS-dialog
+  - [`notify`](./shellscripts/notify) - sends a OS notification (`notify-send` on linux/`applescript` on mac)
+  - [`picker`](./shellscripts/picker) - prompts user to pick from lines received from STDIN
 - Git
   - [`gitopen`](./shellscripts/gitopen) - opens the current git repository/branch in your browser
   - Helpers that return `0` if the condition is met, they're used like: `in-gitdir && command_do_something`
@@ -126,13 +134,3 @@ Requires `python 3.8+`/`golang` to install:
   - [`list-movies`](./shellscripts/list-movies)/[`list-music`](./shellscripts/list-music) - lists any music/movies in the current directory recursively. any additional args are passed onto [`fd`](https://github.com/sharkdp/fd), e.g. `list-music -X mduration`
 - Others:
   - [`ix`](./shellscripts/ix) - terminal pastebin replacement -- anything piped to STDIN gets uploaded to <http://ix.io> and a link is copied to your clipboard
-
-Cross Platform Helpers - these use [`on_machine`](https://github.com/seanbreckenridge/on_machine) to run different commands based on what operating system you're on.
-
-- [`openurl`](./shellscripts/openurl)/[`openurls`](./shellscripts/openurls) - URL opener
-- [`clipcopy`](./shellscripts/clipcopy)/[`clippaste`](./shellscripts/clippaste) - save to/read from clipboard
-- [`input-dialog`](./shellscripts/input-dialog) - prompts the user to enter some text with an OS-dialog
-- [`notify`](./shellscripts/notify) - sends a OS notification (`notify-send` on linux/`applescript` on mac)
-- [`picker`](./shellscripts/picker) - prompts user to pick from lines received from STDIN
-
-On [`termux`](https://termux.dev/en/), you need to install the [`termux-api`](https://github.com/termux/termux-api) package.
