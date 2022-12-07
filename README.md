@@ -126,6 +126,7 @@ Requires `python 3.8+`/`golang` to install:
   - Helpers that return `0` if the condition is met, they're used like: `in-gitdir && command_do_something`
     - [`in-gitdir`](./shellscripts/in-gitdir) - currently in a git directory
     - [`has-git-remote`](./shellscripts/has-git-remote) - has a `git remote --verbose`
+    - [`git-has-changes`](./shellscripts/git-has-changes) - files have changes or there are untracked files
 - Media
   - [`mduration`](./shellscripts/mduration) - prints the duration of a media file (movie/audio)
   - [`mtotal`](./shellscripts/mtotal) - given a bunch of media files, gives the total duration in minutes
