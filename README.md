@@ -4,8 +4,7 @@ This includes:
 
 - Pure utility/wrangling scripts like [`lower`](./shellscripts/lower), [`upper`](./shellscripts/upper), [`chomp`](./shellscripts/chomp), [`rcut`](./shellscripts/rcut), [`tally`](./shellscripts/tally), [`unique`](./shellscripts/unique), [`average`](./shellscripts/average); which help process outputs of other commands, which are commonly used by other shellscripts I put up on other repositories -- hence the reason to make this repo so they're easily installable
 - Some helper/conversion scripts like [`to-png`](./shellscripts/to-png), [`to-jpeg`](./shellscripts/to-jpeg), [`rotate-img`](./shellscripts/rotate-img), [`tq`](./shellscripts/tq) (`jq` for `toml`)
-- Scripts that provide platform-independent interaction with clipboard/prompting user for input/sending notifications
-- Other random scripts which have more niche uses, but I feel are worth to publish here, with checks for required commands at runtime
+- Cross-Platform scripts that provide interaction with clipboard/prompting user for input/sending notifications on Mac/Linux/Termux
 
 ## Requires
 
