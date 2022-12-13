@@ -104,7 +104,7 @@ Requires `python 3.8+`/`golang` to install:
   - [`html-head`](./shellscripts/html-head): a script to generate `<head>` tags for generated HTML, I often use this like: `pandoc README.md | html-head -a css-dark-mode -a css-pre-wrap | remsync-html-from-stdin` to convert some local markdown file to a basic dark-mode webpage and publish it onto my website with [`remsync`](https://github.com/seanbreckenridge/vps/blob/master/remsync)
 - Data Wrangling
   - [`lower`](./shellscripts/lower)/[`upper`](./shellscripts/upper) - converts all text from STDIN to lowercase/uppercase
-  - [`prefix`](./shellscripts/prefix)/[`suffix`](./shellscripts/suffix) - prepends/adds a string to the beginning/end of each line from STDIN
+  - [`prefix`](./shellscripts/prefix)/[`suffix`](./shellscripts/suffix)/[`surround`](./shellscripts/surround) - prepends/adds a string to the beginning/end of each line from STDIN
   - [`capitalize`](./shellscripts/capitalize) - 'capitalizes' (first letter of) input, e.g. WORD -> Word; word -> Word
   - [`average`](./shellscripts/average) - finds the mean of numerical data piped from STDIN
   - [`rcut`](./shellscripts/rcut) - `cut`, by indexing from the right instead

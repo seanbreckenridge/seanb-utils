@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+set -e
+
+usage() {
+	echo 'Usage: command | surround <STRING...>
+
+Add STRING to the front and end of every line from command'
+	exit "${1:-0}"
+}
+
+havecmd -v perl || exit $?
+
+main() {
+	if [[ "$1" == "-h" ]]; then
+		usage 0
+	fi
+	if [[ -z "$1" ]]; then
+		echo 'Must provide STRING to surround lines with' >&2
+		usage 1
+	fi
+	export SURROUND="$*"
+	exec perl -pe 's/^/$ENV{SURROUND}/; s/$/$ENV{SURROUND}/'
+}
+
+main "$@" || exit $?
