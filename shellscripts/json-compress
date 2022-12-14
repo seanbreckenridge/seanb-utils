@@ -4,7 +4,7 @@ import os
 import sys
 import tempfile
 from pathlib import Path
-from typing import Sequence, Any
+from typing import Sequence, Any, List
 from collections import defaultdict
 
 import click
@@ -16,7 +16,7 @@ from seanb.jsonfast import loads, dumps
 @click.option(
     "--check/--no-check",
     show_default=True,
-    help="if compressing wouldn't change the size, dont write anything",
+    help="if compressing wouldn't change the size, dont write to the file",
     is_flag=True,
     default=True,
 )
@@ -32,7 +32,7 @@ def main(check: bool, path: Sequence[Path]) -> None:
     """
     data: Any
     print_sizes: bool = "-" not in {str(p) for p in path}
-    sizes: dict[Path, list[int]] = defaultdict(list)
+    sizes: dict[Path, List[int]] = defaultdict(list)
     for p in path:
         if str(p) == "-":
             data = sys.stdin.read()
@@ -50,7 +50,10 @@ def main(check: bool, path: Sequence[Path]) -> None:
                     temp.flush()
                     tmp_size = os.stat(temp.name).st_size
                 if tmp_size == sizes[p][0]:
-                    print(f"{p} size remained the same, skipping write")
+                    click.echo(
+                        f"json-compress: {p} size remained the same, skipping write",
+                        err=True,
+                    )
                     continue
             with open(p, "w") as f:
                 f.write(compressed)
@@ -60,9 +63,12 @@ def main(check: bool, path: Sequence[Path]) -> None:
                 after = sizes[p][1]
                 diff = before - after
                 if diff == 0:
-                    print(f"{p} size remained the same")
+                    click.echo(f"json-compress: {p} size remained the same", err=True)
                 else:
-                    print(f"{p} reduced by {round(diff / before * 100, 4)}%")
+                    click.echo(
+                        f"json-compress: {p} reduced by {round(diff / before * 100, 4)}%",
+                        err=True,
+                    )
 
 
 if __name__ == "__main__":
