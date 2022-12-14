@@ -2,6 +2,8 @@ import os
 from pathlib import Path
 from setuptools import setup, find_namespace_packages  # type: ignore[import]
 
+reqs = Path("requirements.txt").read_text().splitlines()
+
 
 def main() -> None:
     this_dir = Path(__file__).absolute().parent
@@ -18,6 +20,7 @@ def main() -> None:
         python_requires=">=3.8",
         package_dir={"": "src"},
         zip_safe=False,
+        requirements=reqs,
         description="seanb core utilities/functions",
         package_data={"seanb": ["py.typed"]},
         license="MIT",
