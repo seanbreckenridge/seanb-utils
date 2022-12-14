@@ -1,7 +1,16 @@
 #!/usr/bin/env python3
 # convert a TOML file to JSON, usually piped into jq
-import sys
 import json
 import toml
+import fileinput
+import contextlib
 
-print(json.dumps(toml.loads(sys.stdin.read())))
+
+def main() -> None:
+    lines = list(fileinput.input())
+    print(json.dumps(toml.loads("".join(lines))))
+
+
+if __name__ == "__main__":
+    with contextlib.suppress(KeyboardInterrupt):
+        main()

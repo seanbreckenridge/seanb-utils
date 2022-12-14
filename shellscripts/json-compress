@@ -3,6 +3,7 @@
 import os
 import sys
 import tempfile
+import contextlib
 from pathlib import Path
 from typing import Sequence, Any, List
 from collections import defaultdict
@@ -72,4 +73,5 @@ def main(check: bool, path: Sequence[Path]) -> None:
 
 
 if __name__ == "__main__":
-    main()
+    with contextlib.suppress(KeyboardInterrupt):
+        main()

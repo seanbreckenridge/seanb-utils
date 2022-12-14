@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import shutil
+import contextlib
 import typing as t
 from pathlib import Path
 
@@ -91,4 +92,5 @@ def main(shebang: str, output: t.Optional[Path]) -> None:
 
 
 if __name__ == "__main__":
-    main()
+    with contextlib.suppress(KeyboardInterrupt):
+        main()
