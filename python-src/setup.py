@@ -20,7 +20,7 @@ def main() -> None:
         python_requires=">=3.8",
         package_dir={"": "src"},
         zip_safe=False,
-        requirements=reqs,
+        install_requires=reqs,
         description="seanb core utilities/functions",
         package_data={"seanb": ["py.typed"]},
         license="MIT",
