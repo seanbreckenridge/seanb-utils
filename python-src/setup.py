@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from setuptools import setup, find_namespace_packages
+from setuptools import setup, find_namespace_packages  # type: ignore[import]
 
 
 def main() -> None:
