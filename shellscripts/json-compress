@@ -5,7 +5,7 @@ import sys
 import tempfile
 import contextlib
 from pathlib import Path
-from typing import Sequence, Any, List, Tuple
+from typing import Sequence, Any, List, Tuple, Dict
 from collections import defaultdict
 
 import click
@@ -64,7 +64,7 @@ def main(check: bool, output_fmt: str, path: Sequence[Path]) -> None:
     data: Any
     printer = Printer(output_fmt)
     print_sizes: bool = "-" not in {str(p) for p in path}
-    sizes: dict[Path, List[int]] = defaultdict(list)
+    sizes: Dict[Path, List[int]] = defaultdict(list)
     for p in path:
         if str(p) == "-":
             data = sys.stdin.read()
