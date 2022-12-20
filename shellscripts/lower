@@ -2,11 +2,12 @@
 import sys
 import fileinput
 import contextlib
+from typing import cast
 
 
 def main() -> None:
     for line in fileinput.input(encoding="utf-8", mode="r"):
-        sys.stdout.write(line)
+        sys.stdout.write(cast(str, line))
 
     sys.stdout.flush()
 
