@@ -21,7 +21,7 @@ class Printer:
 
     def print(self, msg: Tuple[str, str]) -> None:
         if self.printer_type == "stderr":
-            click.echo(f"json-compress: {msg[0]} {msg[1]}")
+            click.echo(f"json-compress: {msg[0]} {msg[1]}", err=True)
         elif self.printer_type == "json":
             click.echo(dumps({"file": msg[0], "msg": msg[1]}))
         else:
