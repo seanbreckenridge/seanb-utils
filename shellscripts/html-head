@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
-
 import sys
 from typing import Sequence, Optional
 from pathlib import Path
+import contextlib
 
 import click
 from bs4 import BeautifulSoup, Tag
@@ -45,12 +45,23 @@ def main(
     A script to create a sensible <head> element for HTML
     data is typically piped into this, e.g. from something that emits HTML:
 
+    \b
     pandoc ./README.md | html-head -a css-dark-mode
+
+    \b
+    cat README.txt | pygmentize -f html | html-head ...
 
     This doesn't affect other data already present in head, it only updates
     values if they are not present, can safely be used multiple times:
 
+    \b
     ... | html-head -a css-dark-mode | ... | html-head ...
+
+    \b
+    css-pre-wrap:
+        adds CSS to convert <pre> tags to wrap text
+    css-dark-mode:
+        adds CSS to convert the page to dark mode
     """
     text = (
         sys.stdin.read()
@@ -85,4 +96,5 @@ def main(
 
 
 if __name__ == "__main__":
-    main()
+    with contextlib.suppress(KeyboardInterrupt):
+        main()
