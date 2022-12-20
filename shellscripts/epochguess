@@ -3,13 +3,14 @@
 import sys
 import contextlib
 from datetime import datetime
+from typing import List
 
 import click
 
 
 def guess_epochs(line: str, after: int, only_first: bool, use_token: str = " ") -> str:
     # first guess epoch seconds, then epoch milliseconds
-    converted: list[str] = []
+    converted: List[str] = []
     has_converted = False
     for token in line.split(use_token):
         # only meant to convert the first token we found, and we've already done that

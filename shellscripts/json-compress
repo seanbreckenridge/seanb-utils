@@ -5,12 +5,35 @@ import sys
 import tempfile
 import contextlib
 from pathlib import Path
-from typing import Sequence, Any, List
+from typing import Sequence, Any, List, Tuple
 from collections import defaultdict
 
 import click
 
 from seanb.jsonfast import loads, dumps
+
+
+class Printer:
+    def __init__(self, printer_type: str) -> None:
+        self.printer_type = printer_type
+        assert self.printer_type in ["stderr", "table", "json"]
+        self.messages: List[Tuple[str, str]] = []
+
+    def print(self, msg: Tuple[str, str]) -> None:
+        if self.printer_type == "stderr":
+            click.echo(f"json-compress: {msg[0]} {msg[1]}")
+        elif self.printer_type == "json":
+            click.echo(dumps({"file": msg[0], "msg": msg[1]}))
+        else:
+            self.messages.append(msg)
+
+    def flush(self) -> None:
+        if self.printer_type == "table":
+            from tabulate import tabulate
+
+            click.echo(
+                str(tabulate(self.messages, headers=("File", "Status"), tablefmt="rst"))
+            )
 
 
 @click.command()
@@ -21,17 +44,25 @@ from seanb.jsonfast import loads, dumps
     is_flag=True,
     default=True,
 )
+@click.option(
+    "-o",
+    "--output-fmt",
+    type=click.Choice(["stderr", "table", "json"]),
+    help="Output format",
+    default="stderr",
+)
 @click.argument(
     "PATH",
     nargs=-1,
     type=click.Path(allow_dash=True, exists=True, path_type=Path),
     required=True,
 )
-def main(check: bool, path: Sequence[Path]) -> None:
+def main(check: bool, output_fmt: str, path: Sequence[Path]) -> None:
     """
     pass files to compress, or '-' from STDIN
     """
     data: Any
+    printer = Printer(output_fmt)
     print_sizes: bool = "-" not in {str(p) for p in path}
     sizes: dict[Path, List[int]] = defaultdict(list)
     for p in path:
@@ -51,10 +82,8 @@ def main(check: bool, path: Sequence[Path]) -> None:
                     temp.flush()
                     tmp_size = os.stat(temp.name).st_size
                 if tmp_size == sizes[p][0]:
-                    click.echo(
-                        f"json-compress: {p} size remained the same, skipping write",
-                        err=True,
-                    )
+                    if print_sizes:
+                        printer.print((str(p), "size remained the same"))
                     continue
             with open(p, "w") as f:
                 f.write(compressed)
@@ -64,12 +93,12 @@ def main(check: bool, path: Sequence[Path]) -> None:
                 after = sizes[p][1]
                 diff = before - after
                 if diff == 0:
-                    click.echo(f"json-compress: {p} size remained the same", err=True)
+                    printer.print((str(p), "remained the same"))
                 else:
-                    click.echo(
-                        f"json-compress: {p} reduced by {round(diff / before * 100, 4)}%",
-                        err=True,
-                    )
+                    perc = round(diff / before * 100, 4)
+                    printer.print((str(p), f"reduced by {perc}%"))
+
+    printer.flush()
 
 
 if __name__ == "__main__":

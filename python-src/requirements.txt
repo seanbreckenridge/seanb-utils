@@ -2,3 +2,4 @@ requests
 click
 toml
 beautifulsoup4
+tabulate
