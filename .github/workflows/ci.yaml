@@ -38,4 +38,4 @@ jobs:
           mypy --install-types --non-interactive 'shellscripts/tq'
       - name: Run flake8
         run: |
-          flake8 --config ./python-src/setup.cfg ./python-src/src/seanb
+          flake8 --config ./python-src/setup.cfg ./python-src/seanb
