@@ -25,6 +25,7 @@ jobs:
           pip install ./python-src
       - name: Run mypy
         run: |
+          mypy ./python-src || true
           mypy --install-types --non-interactive ./python-src
           mypy --install-types --non-interactive 'shellscripts/epochdisplay'
           mypy --install-types --non-interactive 'shellscripts/epochguess'
