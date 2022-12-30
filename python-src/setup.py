@@ -1,6 +1,6 @@
 import os
 from pathlib import Path
-from setuptools import setup, find_namespace_packages  # type: ignore[import]
+from setuptools import setup, find_packages  # type: ignore[import]
 
 reqs = Path("requirements.txt").read_text().splitlines()
 
@@ -12,13 +12,12 @@ def main() -> None:
         os.chdir(this_dir)
 
     setup(
-        name="seanb-core",
-        packages=find_namespace_packages("src"),
+        name="seanb",
+        packages=find_packages(".", include=["seanb"]),
         url="https://github.com/seanbreckenridge/core",
         author="Sean Breckenridge",
         author_email="seanbrecke@gmail.com",
         python_requires=">=3.8",
-        package_dir={"": "src"},
         zip_safe=False,
         install_requires=reqs,
         description="seanb core utilities/functions",
