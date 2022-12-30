@@ -13,7 +13,7 @@ def main() -> None:
 
     setup(
         name="seanb",
-        packages=find_packages(".", include=["seanb"]),
+        packages=["seanb"],
         url="https://github.com/seanbreckenridge/core",
         author="Sean Breckenridge",
         author_email="seanbrecke@gmail.com",
