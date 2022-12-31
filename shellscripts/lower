@@ -6,7 +6,7 @@ import contextlib
 
 def main() -> None:
     for line in fileinput.input(encoding="utf-8", mode="r"):  # type: ignore
-        sys.stdout.write(line)
+        sys.stdout.write(line.casefold())
 
     sys.stdout.flush()
 
