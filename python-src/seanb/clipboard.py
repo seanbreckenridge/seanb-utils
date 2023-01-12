@@ -14,5 +14,8 @@ def clippaste() -> str:
     Paste text from your clipboard
     """
     proc = subprocess.run(["clippaste"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    proc.check_returncode()
+    try:
+        proc.check_returncode()
+    except subprocess.CalledProcessError:
+        return ""
     return proc.stdout.decode("utf-8")
