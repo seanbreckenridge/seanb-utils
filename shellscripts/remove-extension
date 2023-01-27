@@ -1,5 +1,5 @@
 #!/usr/bin/env perl
-# grab the extension from a filename
+# removes the extension from a filename
 
 use strict;
 use warnings;
