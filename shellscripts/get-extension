@@ -1,4 +1,15 @@
-#!/bin/sh
-# remove the extension from a filename
-FILEPATH="${1:?You must provide a filepath to remove the extension for}"
-echo "${FILEPATH##*.}"
+#!/usr/bin/env perl
+# grab the extension from a filename
+
+use strict;
+use warnings;
+
+use File::Basename;
+
+foreach (@ARGV) {
+    my ( $name, $path, $suffix ) = fileparse( $_, qr/\.[^.]*/ );
+
+    # remove leading period
+    $suffix =~ s/^\.(.*)/$1/;
+    print $suffix . "\n";
+}
