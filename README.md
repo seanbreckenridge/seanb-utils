@@ -110,6 +110,7 @@ Requires `python 3.8+`/`golang` to install:
   - [`rcut`](./shellscripts/rcut) - `cut`, by indexing from the right instead
   - [`sort-by-last-col`](./shellscripts/sort-by-last-col) - sorts text by last column of text; columns can vary in length
   - [`unique`](./shellscripts/unique) - `uniq`, but doesn't require input to be sorted
+  - [`unique-ignore-case`](./shellscripts/unique-ignore-case) - `unique`, but ignores uppercase/lowercase
   - [`tally`](./shellscripts/tally) - shorthand for 'sort | uniq -c | sort -n'
   - [`group-and-termgraph`](./shellscripts/group-and-termgraph) - takes lines of data and groups/graphs it using [termgraph](https://github.com/mkaz/termgraph). Sort of like a fancy 'sort | uniq -c | sort -n'
   - [`epochdisplay`](./shellscripts/epochdisplay) - given one or more epoch timestamps (`date +"%s"`) prints a readable date. If no args are given, reads from STDIN
