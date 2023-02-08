@@ -30,6 +30,11 @@ havecmd evry -V "Install from ..." || exit $?'
 
 	[[ -n "$HAVECMD_REPORT" ]] && report_missing=1
 
+	[[ "$1" == "--help" ]] && {
+		printf "%s\n" "$usage"
+		exit 10
+	}
+
 	while getopts "hV:v" opt; do
 		case "$opt" in
 		h)

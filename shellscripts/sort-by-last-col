@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-# sort text by last column (columns can vary in length)
-# any additional arguments are passed to awk (e.g. if you want to set FS (e.g. field separator))
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+	echo "Usage: sort-by-last-col [-h] [awk-args]"
+	echo "Sort text by last column (columns can vary in length)"
+	echo "Any additional arguments are passed to awk (e.g. if you want to set FS (e.g. field separator))"
+	exit 0
+fi
 set -o pipefail
 awk "$@" '{print $NF,$0}' | sort -n | cut -f2- -d' '
