@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 DOWNLOAD_DIR="${XDG_DOWNLOAD_DIR:-${HOME}/Downloads}"
 if [[ ! -d "$DOWNLOAD_DIR" ]]; then
 	# shellcheck disable=SC2016

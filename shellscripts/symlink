@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # a helper symlink script since I always forget how to do this properly
 
 symlink() {
