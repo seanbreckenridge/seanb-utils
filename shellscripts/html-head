@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup, Tag
 
 user_has_lxml = False
 try:
-    import lxml  # noqa: F401
+    import lxml  # type: ignore[import] # noqa: F401
 
     user_has_lxml = True
 except Exception:
