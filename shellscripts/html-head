@@ -8,6 +8,14 @@ import contextlib
 import click
 from bs4 import BeautifulSoup, Tag
 
+user_has_lxml = False
+try:
+    import lxml  # noqa: F401
+
+    user_has_lxml = True
+except Exception:
+    pass
+
 
 @click.command()
 @click.option(
@@ -42,7 +50,7 @@ def main(
     input_file: Optional[Path], _charset: bool, _viewport: bool, add: Sequence[str]
 ) -> None:
     """
-    A script to create a sensible <head> element for HTML
+    A script to create a sensible <head> element for HTML pages.
     data is typically piped into this, e.g. from something that emits HTML:
 
     \b
@@ -68,7 +76,7 @@ def main(
         if input_file is None or str(input_file) == "-"
         else input_file.read_text()
     )
-    soup = BeautifulSoup(text, features="lxml")
+    soup = BeautifulSoup(text, "lxml" if user_has_lxml else "html.parser")
     # find head tag, or create it and insert with good defaults
     assert soup.body is not None
     maybe_head = soup.head
