@@ -8,4 +8,9 @@ havecmd -V 'aborting python install...' python3 || exit $?
 THIS_DIR="$(realpath "$(dirname "${BASH_SOURCE[0]}")")"
 cd "${THIS_DIR}/../python-src" || exit $?
 
-python3 -m pip install '.'
+ADDITIONAL_FLAGS=()
+if [[ -n "${PIP_BREAK_SYSTEM_PACKAGES}" ]]; then
+	ADDITIONAL_FLAGS+=('--break-system-packages')
+fi
+
+python3 -m pip install "${ADDITIONAL_FLAGS[@]}" .
