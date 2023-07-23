@@ -132,6 +132,9 @@ Requires `python 3.8+`/`golang` to install:
   - [`mtotal`](./shellscripts/mtotal) - given a bunch of media files, gives the total duration in minutes
   - [`image-dimensions`](./shellscripts/image-dimensions) - prints the width/height for images passed as arguments
   - [`gifme`](./shellscripts/gifme) - Creates a gif from a (section of a) video file. Lets you specify start/end times and an fps for the gif to run at
-  - [`list-movies`](./shellscripts/list-movies)/[`list-music`](./shellscripts/list-music) - lists any music/movies in the current directory recursively. any additional args are passed onto [`fd`](https://github.com/sharkdp/fd), e.g. `list-music -X mduration`
+  - [`list-movies`](./shellscripts/list-movies)/[`list-music`](./shellscripts/list-music) - lists any music/movies in the current directory recursively. any additional args are passed onto [`fd`](https://github.com/sharkdp/fd), e.g.
+    - `list-music -X medialength -o sum` (find length of an album in current directory)
+    - `list-movies -X medialength -d path -o min` (find shortest movie in current directory)
+    - `list-movies -X medialength -d all | sort -n` (sort results by length)
 - Others:
   - [`ix`](./shellscripts/ix) - terminal pastebin replacement -- anything piped to STDIN gets uploaded to <http://ix.io> and a link is copied to your clipboard
