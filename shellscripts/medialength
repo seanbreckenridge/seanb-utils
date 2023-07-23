@@ -9,16 +9,21 @@ subsequent runs are faster. If media files are modified, the cache is recomputed
 MEDIA is a list of media files to compute the duration of
 """
 
+import sys
 import operator
-from typing import Optional, TYPE_CHECKING, Sequence, Literal
+from typing import Optional, Sequence, Literal
 from pathlib import Path
 
 import click
 
-if TYPE_CHECKING:
-    from pymediainfo import MediaInfo
-
 Ms = int | float
+
+DEBUG = False
+
+
+def debug(message: str) -> None:
+    if DEBUG:
+        click.echo(f"DEBUG: {message}", err=True)
 
 
 class MediaFile:
@@ -26,16 +31,11 @@ class MediaFile:
         self,
         path: Path,
         cache_dir: Path,
-        debug: bool,
-        lib: Literal["mediainfo", "ffprobe"],
     ) -> None:
         self.path = path
-        self.cache_dir = cache_dir
-        self._debug = debug
-        self._info: Optional["MediaInfo"] = None
-        self._lib = lib
+        self.cache_file = cache_dir / Path(*self.path.absolute().parts[1:])
 
-    __slots__ = ("path", "cache_dir", "_debug", "_info", "_lib")
+    __slots__ = ("path", "cache_file")
 
     def __repr__(self) -> str:
         return f"MediaFile({self.path})"
@@ -43,22 +43,12 @@ class MediaFile:
     def __str__(self) -> str:
         return str(self.path)
 
-    def debug(self, message: str) -> None:
-        if self._debug:
-            click.echo(f"DEBUG: {message}", err=True)
-
-    @property
-    def mediainfo(self):
+    def mediainfo_duration(self) -> Ms:
         from pymediainfo import MediaInfo
 
-        if self._info is None:
-            self.debug(f"parsing {self.path}")
-            self._info = MediaInfo.parse(self.path)
-        return self._info
-
-    def mediainfo_duration(self) -> Ms:
-        tracks = self.mediainfo.tracks
-        self.debug(f"tracks: {tracks}")
+        debug(f"parsing {self.path}")
+        tracks = MediaInfo.parse(self.path).tracks
+        debug(f"tracks: {tracks}")
         if len(tracks) == 0:
             raise ValueError(f"Could not parse duration for {self.path}")
         duration: int
@@ -68,7 +58,7 @@ class MediaFile:
                 break
         else:
             raise ValueError(f"Could not parse duration for {self.path}")
-        self.debug(f"parsed duration: {duration}")
+        debug(f"parsed duration: {duration}")
         return duration
 
     def ffprobe_duration(self) -> Ms:
@@ -87,18 +77,22 @@ class MediaFile:
             self.path.absolute(),
             *shlex.split("-show_entries format=duration -v quiet -of csv='p=0'"),
         ]
-        self.debug(f"running command: {cmd}")
-        buf = subprocess.check_output(cmd)
+        debug(f"running command: {cmd}")
+        try:
+            buf = subprocess.check_output(cmd)
+        except subprocess.CalledProcessError as e:
+            debug(f"could not parse duration for {self.path}, recieved {e}")
+            raise ValueError(f"Could not parse duration for {self.path}") from e
         output = buf.decode().strip()
         if output == "" or output == "N/A":
-            self.debug(f"could not parse duration for {self.path}, recieved {output}")
+            debug(f"could not parse duration for {self.path}, recieved {output}")
             raise ValueError(f"Could not parse duration for {self.path}")
         duration = int(float(output) * 1000)
-        self.debug(f"parsed duration: {duration}")
+        debug(f"parsed duration: {duration}")
         return duration
 
-    def parse_duration(self) -> Ms:
-        if self._lib == "mediainfo":
+    def parse_duration(self, lib: Literal["mediainfo", "ffprobe"]) -> Ms:
+        if lib == "mediainfo":
             try:
                 duration = self.mediainfo_duration()
             except ValueError:
@@ -108,33 +102,27 @@ class MediaFile:
             duration = self.ffprobe_duration()
         return duration
 
-    @property
-    def cache_file(self) -> Path:
-        cf = self.cache_dir / Path(*self.path.absolute().parts[1:])
-        self.debug(f"cache file: {cf}")
-        return cf
-
     def read_cached_duration(self) -> Ms:
         # assumes the cache file exists
         try:
             cached_dur = int(self.cache_file.read_text())
         except ValueError:
             raise ValueError(f"Could not parse duration for {self.path}")
-        self.debug(f"cached duration: {cached_dur}")
+        debug(f"cached duration: {cached_dur}")
         return cached_dur
 
     def write_cached_duration(self, duration: Ms) -> None:
         if not self.cache_file.parent.exists():
             self.cache_file.parent.mkdir(parents=True, exist_ok=True)
-        self.debug(f"writing duration {duration} to {self.cache_file}")
+        debug(f"writing duration {duration} to {self.cache_file}")
         self.cache_file.write_text(str(duration))
 
-    def cached_duration(self) -> Ms:
+    def cached_duration(self, lib: Literal["mediainfo", "ffprobe"]) -> Ms:
         cf = self.cache_file
         if not cf.exists():
-            self.debug(f"cache file {cf} does not exist")
+            debug(f"cache file {cf} does not exist")
             # write to cache file
-            duration = self.parse_duration()
+            duration = self.parse_duration(lib)
             self.write_cached_duration(duration)
             return duration
 
@@ -142,13 +130,11 @@ class MediaFile:
         media_st = self.path.stat()
         # if the cache file is older than the media file, then it's stale, recompute
         if cf_st.st_mtime < media_st.st_mtime:
-            self.debug(
-                f"cache file {cf} is older than media file {self.path}, recomputing"
-            )
+            debug(f"cache file {cf} is older than media file {self.path}, recomputing")
             cf.unlink()
-            return self.cached_duration()  # recurse
+            return self.cached_duration(lib)  # recurse
 
-        self.debug("cache file is newer than media file, reading from cache file")
+        debug("cache file is newer than media file, reading from cache file")
         # otherwise, read from the cache file
         return self.read_cached_duration()
 
@@ -223,9 +209,12 @@ def display_duration(
     default="human",
     help="Display format for durations",
 )
-@click.option("--debug", is_flag=True, help="Enable debug mode")
+@click.option("--debug", "_debug", is_flag=True, help="Enable debug mode")
 @click.argument(
-    "MEDIA", type=click.Path(exists=True, path_type=Path), nargs=-1, required=True
+    "MEDIA",
+    type=click.Path(exists=True, path_type=Path, allow_dash=True),
+    nargs=-1,
+    required=True,
 )
 def main(
     media: Sequence[Path],
@@ -233,17 +222,27 @@ def main(
     cache_dir: Path,
     lib: Literal["mediainfo", "ffprobe"],
     display: Literal["ms", "s", "human"],
-    debug: bool,
+    _debug: bool,
     cache: bool,
 ) -> None:
+    global DEBUG
     cache_dir = Path(cache_dir).expanduser().absolute()
     cache_dir.mkdir(parents=True, exist_ok=True)
+    if len(media) == 1 and str(media[0]) == "-":
+        media = [Path(f) for f in sys.stdin.read().splitlines()]
+        for m in media:
+            if not m.exists():
+                # raise click exception
+                raise click.BadParameter(f"File {m} from STDIN does not exist")
     if len(media) == 0:
         click.echo("No media files specified", err=True)
         return
-    media_files = [MediaFile(m, cache_dir, debug, lib) for m in media]
+    if _debug:
+        DEBUG = True
+    media_files = [MediaFile(m, cache_dir) for m in media]
     durations = (
-        mf.cached_duration() if cache else mf.parse_duration() for mf in media_files
+        mf.cached_duration(lib) if cache else mf.parse_duration(lib)
+        for mf in media_files
     )
     if operation is None:
         for i, d in enumerate(durations):
