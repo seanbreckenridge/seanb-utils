@@ -128,7 +128,7 @@ Requires `python 3.8+`/`golang` to install:
     - [`has-git-remote`](./shellscripts/has-git-remote) - has a `git remote --verbose`
     - [`git-has-changes`](./shellscripts/git-has-changes) - files have changes or there are untracked files
 - Media
-  - [`mduration`](./shellscripts/mduration) - prints the duration of a media file (movie/audio)
+  - [`medialength`](./shellscripts/medialength) - prints the duration of a media file (movie/audio), caches durations and provides operations to find min/max durations
   - [`mtotal`](./shellscripts/mtotal) - given a bunch of media files, gives the total duration in minutes
   - [`image-dimensions`](./shellscripts/image-dimensions) - prints the width/height for images passed as arguments
   - [`gifme`](./shellscripts/gifme) - Creates a gif from a (section of a) video file. Lets you specify start/end times and an fps for the gif to run at

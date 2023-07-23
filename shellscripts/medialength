@@ -1,0 +1,288 @@
+#!/usr/bin/env python3
+
+"""Compute the duration of media files
+
+\b
+This caches the duration of media files in a cache directory, so that
+subsequent runs are faster. If media files are modified, the cache is recomputed
+
+MEDIA is a list of media files to compute the duration of
+"""
+
+import operator
+from typing import Optional, TYPE_CHECKING, Sequence, Literal
+from pathlib import Path
+
+import click
+
+if TYPE_CHECKING:
+    from pymediainfo import MediaInfo
+
+Ms = int | float
+
+
+class MediaFile:
+    def __init__(
+        self,
+        path: Path,
+        cache_dir: Path,
+        debug: bool,
+        lib: Literal["mediainfo", "ffprobe"],
+    ) -> None:
+        self.path = path
+        self.cache_dir = cache_dir
+        self._debug = debug
+        self._info: Optional["MediaInfo"] = None
+        self._lib = lib
+
+    __slots__ = ("path", "cache_dir", "_debug", "_info", "_lib")
+
+    def __repr__(self) -> str:
+        return f"MediaFile({self.path})"
+
+    def __str__(self) -> str:
+        return str(self.path)
+
+    def debug(self, message: str) -> None:
+        if self._debug:
+            click.echo(f"DEBUG: {message}", err=True)
+
+    @property
+    def mediainfo(self):
+        from pymediainfo import MediaInfo
+
+        if self._info is None:
+            self.debug(f"parsing {self.path}")
+            self._info = MediaInfo.parse(self.path)
+        return self._info
+
+    def mediainfo_duration(self) -> Ms:
+        tracks = self.mediainfo.tracks
+        self.debug(f"tracks: {tracks}")
+        if len(tracks) == 0:
+            raise ValueError(f"Could not parse duration for {self.path}")
+        duration: int
+        for track in tracks:
+            if track.duration is not None:
+                duration = track.duration
+                break
+        else:
+            raise ValueError(f"Could not parse duration for {self.path}")
+        self.debug(f"parsed duration: {duration}")
+        return duration
+
+    def ffprobe_duration(self) -> Ms:
+        import shlex
+        import subprocess
+        import shutil
+
+        if not shutil.which("ffprobe"):
+            raise ValueError(
+                "ffprobe not found, cannot parse duration (this is installed as part of ffmpeg)"
+            )
+
+        cmd = [
+            "ffprobe",
+            "-i",
+            self.path.absolute(),
+            *shlex.split("-show_entries format=duration -v quiet -of csv='p=0'"),
+        ]
+        self.debug(f"running command: {cmd}")
+        buf = subprocess.check_output(cmd)
+        output = buf.decode().strip()
+        if output == "" or output == "N/A":
+            self.debug(f"could not parse duration for {self.path}, recieved {output}")
+            raise ValueError(f"Could not parse duration for {self.path}")
+        duration = int(float(output) * 1000)
+        self.debug(f"parsed duration: {duration}")
+        return duration
+
+    def parse_duration(self) -> Ms:
+        if self._lib == "mediainfo":
+            try:
+                duration = self.mediainfo_duration()
+            except ValueError:
+                # fall back to ffprobe
+                duration = self.ffprobe_duration()
+        else:
+            duration = self.ffprobe_duration()
+        return duration
+
+    @property
+    def cache_file(self) -> Path:
+        cf = self.cache_dir / Path(*self.path.absolute().parts[1:])
+        self.debug(f"cache file: {cf}")
+        return cf
+
+    def read_cached_duration(self) -> Ms:
+        # assumes the cache file exists
+        try:
+            cached_dur = int(self.cache_file.read_text())
+        except ValueError:
+            raise ValueError(f"Could not parse duration for {self.path}")
+        self.debug(f"cached duration: {cached_dur}")
+        return cached_dur
+
+    def write_cached_duration(self, duration: Ms) -> None:
+        if not self.cache_file.parent.exists():
+            self.cache_file.parent.mkdir(parents=True, exist_ok=True)
+        self.debug(f"writing duration {duration} to {self.cache_file}")
+        self.cache_file.write_text(str(duration))
+
+    def cached_duration(self) -> Ms:
+        cf = self.cache_file
+        if not cf.exists():
+            self.debug(f"cache file {cf} does not exist")
+            # write to cache file
+            duration = self.parse_duration()
+            self.write_cached_duration(duration)
+            return duration
+
+        cf_st = cf.stat()
+        media_st = self.path.stat()
+        # if the cache file is older than the media file, then it's stale, recompute
+        if cf_st.st_mtime < media_st.st_mtime:
+            self.debug(
+                f"cache file {cf} is older than media file {self.path}, recomputing"
+            )
+            cf.unlink()
+            return self.cached_duration()  # recurse
+
+        self.debug("cache file is newer than media file, reading from cache file")
+        # otherwise, read from the cache file
+        return self.read_cached_duration()
+
+
+def display_duration(
+    ms: Ms,
+    *,
+    display: Literal["ms", "path", "s", "m", "human", "all"],
+    path: Optional[Path],
+) -> str:
+    if display == "ms":
+        return str(round(ms, 2))
+    elif display == "path":
+        assert path is not None, "path must be provided when display is path"
+        return str(path)
+    elif display == "s":
+        return str(round(ms / 1000, 2))
+    elif display == "m":
+        return str(round(ms / 1000 / 60, 2))
+    elif display == "human":
+        # divmod to get hours, minutes, seconds
+        m, s = divmod(ms / 1000, 60)
+        h, m = divmod(m, 60)
+        return f"{int(h):02d}:{int(m):02d}:{s:02.2f}"
+    elif display == "all":
+        # recursive call
+        assert path is not None, "path must be provided when display is all"
+        return "|".join(
+            [
+                display_duration(ms, display=d, path=path)
+                for d in ("ms", "s", "m", "human", "path")
+            ],
+        )
+    else:
+        raise ValueError(f"Invalid display {display}")
+
+
+@click.command(context_settings={"max_content_width": 120}, help=__doc__)
+@click.option(
+    "--cache-dir",
+    type=click.Path(path_type=Path, dir_okay=True),
+    default=Path("~/.cache/medialength"),
+    show_default=True,
+    help="Cache directory",
+)
+@click.option(
+    "--lib",
+    type=click.Choice(["mediainfo", "ffprobe"]),
+    envvar="MEDIALENGTH_LIB",
+    default="ffprobe",
+    show_default=True,
+    show_envvar=True,
+    help="Library to use for parsing media files",
+)
+@click.option(
+    "--cache/--no-cache",
+    default=True,
+    show_default=True,
+    help="Enable/disable caching",
+)
+@click.option(
+    "-o",
+    "--operation",
+    type=click.Choice(["sum", "max", "min", "avg"]),
+    default=None,
+    help="Operation to perform on the durations",
+)
+@click.option(
+    "-d",
+    "--display",
+    type=click.Choice(["ms", "s", "m", "human", "path", "all"]),
+    default="human",
+    help="Display format for durations",
+)
+@click.option("--debug", is_flag=True, help="Enable debug mode")
+@click.argument(
+    "MEDIA", type=click.Path(exists=True, path_type=Path), nargs=-1, required=True
+)
+def main(
+    media: Sequence[Path],
+    operation: Optional[Literal["sum", "max", "min", "avg"]],
+    cache_dir: Path,
+    lib: Literal["mediainfo", "ffprobe"],
+    display: Literal["ms", "s", "human"],
+    debug: bool,
+    cache: bool,
+) -> None:
+    cache_dir = Path(cache_dir).expanduser().absolute()
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    if len(media) == 0:
+        click.echo("No media files specified", err=True)
+        return
+    media_files = [MediaFile(m, cache_dir, debug, lib) for m in media]
+    durations = (
+        mf.cached_duration() if cache else mf.parse_duration() for mf in media_files
+    )
+    if operation is None:
+        for i, d in enumerate(durations):
+            if display == "path":
+                click.echo(media[i])
+            else:
+                click.echo(display_duration(d, display=display, path=media[i]))
+        return
+
+    durations = list(durations)
+
+    if operation == "sum":
+        if display in ["path", "all"]:
+            click.echo("Cannot display path for sum/all", err=True)
+            raise SystemExit(1)
+        click.echo(display_duration(sum(durations), display=display, path=None))
+    elif operation == "avg":
+        average = sum(durations) / len(media_files)
+        if display_duration in ["path", "all"]:
+            click.echo("Cannot display path/all for average", err=True)
+            raise SystemExit(1)
+        click.echo(display_duration(average, display=display, path=None))
+    elif operation == "max":
+        max_index = max(enumerate(durations), key=operator.itemgetter(1))[0]
+        click.echo(
+            display_duration(
+                durations[max_index], display=display, path=media[max_index]
+            )
+        )
+    elif operation == "min":
+        min_index = min(enumerate(durations), key=operator.itemgetter(1))[0]
+        click.echo(
+            display_duration(
+                durations[min_index], display=display, path=media[min_index]
+            )
+        )
+    else:
+        raise ValueError(f"Invalid operation {operation}")
+
+
+if __name__ == "__main__":
+    main(prog_name="medialength")
