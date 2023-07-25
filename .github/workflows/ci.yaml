@@ -37,6 +37,7 @@ jobs:
           mypy --install-types --non-interactive 'shellscripts/shebang'
           mypy --install-types --non-interactive 'shellscripts/tq'
           mypy --install-types --non-interactive 'shellscripts/unique-ignore-case'
+          mypy --install-types --non-interactive 'shellscripts/medialength'
       - name: Run flake8
         run: |
           flake8 --config ./python-src/setup.cfg ./python-src/seanb

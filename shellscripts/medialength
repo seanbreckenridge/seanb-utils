@@ -44,7 +44,7 @@ class MediaFile:
         return str(self.path)
 
     def mediainfo_duration(self) -> Ms:
-        from pymediainfo import MediaInfo
+        from pymediainfo import MediaInfo  # type: ignore[import]
 
         debug(f"parsing {self.path}")
         tracks = MediaInfo.parse(self.path).tracks
@@ -71,10 +71,10 @@ class MediaFile:
                 "ffprobe not found, cannot parse duration (this is installed as part of ffmpeg)"
             )
 
-        cmd = [
+        cmd: Sequence[str] = [
             "ffprobe",
             "-i",
-            self.path.absolute(),
+            str(self.path.absolute()),
             *shlex.split("-show_entries format=duration -v quiet -of csv='p=0'"),
         ]
         debug(f"running command: {cmd}")
@@ -158,13 +158,14 @@ def display_duration(
         # divmod to get hours, minutes, seconds
         m, s = divmod(ms / 1000, 60)
         h, m = divmod(m, 60)
-        return f"{int(h):02d}:{int(m):02d}:{s:02.2f}"
+        seconds = f"{s:.2f}".zfill(5)  # pad x.xx with zeros
+        return f"{int(h):02d}:{int(m):02d}:{seconds}"
     elif display == "all":
         # recursive call
         assert path is not None, "path must be provided when display is all"
         return "|".join(
             [
-                display_duration(ms, display=d, path=path)
+                display_duration(ms, display=d, path=path)  # type: ignore[arg-type]
                 for d in ("ms", "s", "m", "human", "path")
             ],
         )
@@ -221,7 +222,7 @@ def main(
     operation: Optional[Literal["sum", "max", "min", "avg"]],
     cache_dir: Path,
     lib: Literal["mediainfo", "ffprobe"],
-    display: Literal["ms", "s", "human"],
+    display: Literal["ms", "s", "m", "human", "path", "all"],
     _debug: bool,
     cache: bool,
 ) -> None:
@@ -240,19 +241,19 @@ def main(
     if _debug:
         DEBUG = True
     media_files = [MediaFile(m, cache_dir) for m in media]
-    durations = (
+    durations_gen = (
         mf.cached_duration(lib) if cache else mf.parse_duration(lib)
         for mf in media_files
     )
     if operation is None:
-        for i, d in enumerate(durations):
+        for i, d in enumerate(durations_gen):
             if display == "path":
                 click.echo(media[i])
             else:
                 click.echo(display_duration(d, display=display, path=media[i]))
         return
 
-    durations = list(durations)
+    durations = list(durations_gen)
 
     if operation == "sum":
         if display in ["path", "all"]:
