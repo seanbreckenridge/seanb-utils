@@ -11,12 +11,12 @@ MEDIA is a list of media files to compute the duration of
 
 import sys
 import operator
-from typing import Optional, Sequence, Literal
+from typing import Optional, Sequence, Literal, Union
 from pathlib import Path
 
 import click
 
-Ms = int | float
+Ms = Union[int, float]
 
 DEBUG = False
 
