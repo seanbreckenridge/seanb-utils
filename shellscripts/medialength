@@ -81,11 +81,11 @@ class MediaFile:
         try:
             buf = subprocess.check_output(cmd)
         except subprocess.CalledProcessError as e:
-            debug(f"could not parse duration for {self.path}, recieved {e}")
+            debug(f"could not parse duration for {self.path}, received {e}")
             raise ValueError(f"Could not parse duration for {self.path}") from e
         output = buf.decode().strip()
         if output == "" or output == "N/A":
-            debug(f"could not parse duration for {self.path}, recieved {output}")
+            debug(f"could not parse duration for {self.path}, received {output}")
             raise ValueError(f"Could not parse duration for {self.path}")
         duration = int(float(output) * 1000)
         debug(f"parsed duration: {duration}")
