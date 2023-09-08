@@ -4,3 +4,4 @@ toml
 beautifulsoup4
 tabulate
 pymediainfo
+atomicwrites

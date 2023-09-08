@@ -9,6 +9,7 @@ from typing import Sequence, Any, List, Tuple, Dict
 from collections import defaultdict
 
 import click
+from atomicwrites import atomic_write  # type: ignore[import]
 
 from seanb.jsonfast import loads, dumps
 
@@ -85,7 +86,7 @@ def main(check: bool, output_fmt: str, path: Sequence[Path]) -> None:
                     if print_sizes:
                         printer.print((str(p), "size remained the same"))
                     continue
-            with open(p, "w") as f:
+            with atomic_write(p, overwrite=True) as f:
                 f.write(compressed)
             sizes[p].append(p.stat().st_size)
             if print_sizes:
