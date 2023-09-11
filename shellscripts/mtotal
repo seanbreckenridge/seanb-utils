@@ -1,2 +1,0 @@
-#!/bin/sh
-exec medialength -o sum -d m "$@"
