@@ -26,9 +26,9 @@ main() {
 
 	if [[ -z "$BROWSER" ]]; then
 		# shellcheck disable=SC2016
-		echo -e 'Error: The $BROWSER environment variable must be set. e.g. in your shell profile
+		echo -e 'openurl: The $BROWSER environment variable must be set. e.g. in your shell profile
 
-export BROWSER="firefox-developer-edition:google-chrome"\n'
+export BROWSER="firefox-developer-edition:google-chrome"\n' >&2
 		usage 1
 	fi
 	# if no URL was passed, read the first line from STDIN
@@ -37,9 +37,17 @@ export BROWSER="firefox-developer-edition:google-chrome"\n'
 	# if misconfigured, prevent this from looping infinitely
 	if [[ "$BROWSER" == 'openurl' ]]; then
 		# shellcheck disable=SC2016
-		echo "\$BROWSER can't be openurl, exiting"
+		printf '$BROWSER can't be openurl, exiting\n' >&2
 		return 1
 	fi
+
+	if [[ -z "$URL" ]]; then
+		printf 'openurl: No URL passed as argument or piped into STDIN\n' >&2
+		usage 1
+	fi
+
+	# remove trailing ¬ from the URL (used in my editor to denote end of line)
+	URL="${URL%¬}"
 
 	# https://github.com/seanbreckenridge/ttt
 	command -v tttlog >/dev/null 2>&1 && tttlog "openurl $URL"
@@ -59,7 +67,7 @@ export BROWSER="firefox-developer-edition:google-chrome"\n'
 		exec termux-open-url "$URL"
 		;;
 	*)
-		printf 'Unknown Operating System: %s\nAttempting open with "python3 -m webbrowser"' "$OS"
+		printf 'Unknown Operating System: %s\nAttempting open with "python3 -m webbrowser"' "$OS" >&2
 		exec python3 -m webbrowser -t "$URL"
 		;;
 	esac
