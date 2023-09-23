@@ -22,7 +22,7 @@ def guess_epochs(line: str, after: int, only_first: bool, use_token: str = " ") 
             try:
                 from_secs = datetime.fromtimestamp(float(token))
                 if from_secs.year < after:
-                    raise ValueError("doesnt meet after constraint")
+                    raise ValueError("doesn't meet after constraint")
                 converted.append(str(from_secs))
                 has_converted = True
                 continue
@@ -30,7 +30,7 @@ def guess_epochs(line: str, after: int, only_first: bool, use_token: str = " ") 
                 try:
                     from_ms = datetime.fromtimestamp(float(token) / 1000)
                     if from_ms.year < after:
-                        raise ValueError("doesnt meet after constraint")
+                        raise ValueError("doesn't meet after constraint")
                     converted.append(str(from_ms))
                     has_converted = True
                     continue
@@ -59,7 +59,7 @@ def guess_epochs(line: str, after: int, only_first: bool, use_token: str = " ") 
     "-d",
     "--delimiter",
     default=" ",
-    help="Delimiter to split by when attemping to find possible matches",
+    help="Delimiter to split by when attempting to find possible matches",
 )
 def main(after: int, first: bool, delimiter: str):
     """
