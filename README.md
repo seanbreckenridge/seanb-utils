@@ -121,7 +121,9 @@ Requires `python 3.8+`/`golang` to install:
 - [`epochdisplay`](./shellscripts/epochdisplay) - given one or more epoch timestamps (`date +"%s"`) prints a readable date. If no args are given, reads from STDIN
 - [`epochguess`](./shellscripts/epochguess) - reads anything from STDIN. convert any epoch timestamps that looks like a datetime to local-readable timestamps
 
-##### Cross Platform Helpers - these use [`on_machine`](https://github.com/seanbreckenridge/on_machine) to run different commands based on what operating system you're on
+##### Cross Platform Helpers
+
+These use [`on_machine`](https://github.com/seanbreckenridge/on_machine) to run different commands based on what operating system you're on
 
 - [`openurl`](./shellscripts/openurl)/[`openurls`](./shellscripts/openurls) - URL opener
 - [`clipcopy`](./shellscripts/clipcopy)/[`clippaste`](./shellscripts/clippaste) - save to/read from clipboard
