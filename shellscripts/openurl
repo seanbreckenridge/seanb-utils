@@ -37,7 +37,7 @@ export BROWSER="firefox-developer-edition:google-chrome"\n' >&2
 	# if misconfigured, prevent this from looping infinitely
 	if [[ "$BROWSER" == 'openurl' ]]; then
 		# shellcheck disable=SC2016
-		printf '$BROWSER can't be openurl, exiting\n' >&2
+		printf "\$BROWSER can't be openurl, exiting\n" >&2
 		return 1
 	fi
 
