@@ -1,8 +1,6 @@
 import os
 from pathlib import Path
-from setuptools import setup, find_packages  # type: ignore[import]
-
-reqs = Path("requirements.txt").read_text().splitlines()
+from setuptools import setup
 
 
 def main() -> None:
@@ -11,20 +9,7 @@ def main() -> None:
         print(f"setuptools: cd'ing to {this_dir}")
         os.chdir(this_dir)
 
-    setup(
-        name="seanb",
-        packages=["seanb"],
-        url="https://github.com/seanbreckenridge/core",
-        author="Sean Breckenridge",
-        author_email="seanbrecke@gmail.com",
-        python_requires=">=3.8",
-        zip_safe=False,
-        install_requires=reqs,
-        description="seanb core utilities/functions",
-        package_data={"seanb": ["py.typed"]},
-        license="MIT",
-        version="0.1.0",
-    )
+    setup()
 
 
 if __name__ == "__main__":
