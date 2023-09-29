@@ -143,7 +143,7 @@ These use [`on_machine`](https://github.com/seanbreckenridge/on_machine) to run 
 
 - [`image-dimensions`](./shellscripts/image-dimensions) - prints the width/height for images passed as arguments
 - [`gifme`](./shellscripts/gifme) - Creates a gif from a (section of a) video file. Lets you specify start/end times and an fps for the gif to run at
-- [`list-movies`](./shellscripts/list-movies)/[`list-music`](./shellscripts/list-music) - lists any music/movies in the current directory recursively. any additional args are passed onto [`fd`](https://github.com/sharkdp/fd), e.g, with [`mlength`](github.com/seanbreckenridge/mlength)
+- [`list-movies`](./shellscripts/list-movies)/[`list-music`](./shellscripts/list-music) - lists any music/movies in the current directory recursively. any additional args are passed onto [`fd`](https://github.com/sharkdp/fd), e.g, with [`mlength`](https://github.com/seanbreckenridge/mlength)
   - `list-music -X mlength -o sum` (find length of an album in current directory)
   - `list-movies -X mlength -d path -o min` (find shortest movie in current directory)
   - `list-movies -X mlength -d all | sort -n` (sort results by length)
