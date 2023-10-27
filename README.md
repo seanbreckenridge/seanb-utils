@@ -138,6 +138,8 @@ These use [`on_machine`](https://github.com/seanbreckenridge/on_machine) to run 
   - [`in-gitdir`](./shellscripts/in-gitdir) - currently in a git directory
   - [`has-git-remote`](./shellscripts/has-git-remote) - has a `git remote --verbose`
   - [`git-has-changes`](./shellscripts/git-has-changes) - files have changes or there are untracked files
+  - [`git-list-untracked-files`](./shellscripts/git-list-untracked-files) - prints files that are not tracked by git
+  - [`git-has-untracked-files`](./shellscripts/git-has-untracked-files) - exits with 0 if there are any untracked files
 
 ##### Media
 

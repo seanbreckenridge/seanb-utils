@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -o pipefail
+
+FILES="$(git-list-untracked-files)" || exit $?
+if [[ -n "$FILES" ]]; then
+	exit 0
+else
+	exit 1
+fi
