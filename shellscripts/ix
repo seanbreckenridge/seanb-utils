@@ -12,7 +12,7 @@ Flags:
 
 Can be used to send lines from vim to ix like:
 <number of lines>!!ix -v
-See https://exobrain.sean.fish/programming/languages/shell_tools/vim/magic_wands/'
+See https://sean.fish/x/notes/programming/languages/shell_tools/vim/magic_wands/'
 	exit "${1:-0}"
 }
 
