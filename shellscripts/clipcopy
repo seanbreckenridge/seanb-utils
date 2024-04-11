@@ -27,7 +27,11 @@ STDIN="$(cat)"
 
 case "${ON_OS:-$(on_machine)}" in
 linux*)
-	printf '%s' "${STDIN}" | xclip -in -selection clipboard
+	if havecmd wl-copy; then
+		printf '%s' "${STDIN}" | wl-copy
+	else
+		printf '%s' "${STDIN}" | xclip -in -selection clipboard
+	fi
 	;;
 mac*)
 	printf '%s' "${STDIN}" | pbcopy

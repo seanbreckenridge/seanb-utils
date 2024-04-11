@@ -9,7 +9,11 @@ fi
 
 case "${ON_OS:-$(on_machine)}" in
 linux*)
-	exec xclip -out -selection clipboard
+	if havecmd wl-paste; then
+		exec wl-paste
+	else
+		exec xclip -out -selection clipboard
+	fi
 	;;
 mac*)
 	exec pbpaste
