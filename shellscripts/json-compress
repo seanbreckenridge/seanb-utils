@@ -5,7 +5,7 @@ import sys
 import tempfile
 import contextlib
 from pathlib import Path
-from typing import Sequence, Any, List, Tuple, Dict
+from typing import Sequence, Any, List, Tuple, Dict, Literal, get_args
 from collections import defaultdict
 
 import click
@@ -14,10 +14,12 @@ from atomicwrites import atomic_write  # type: ignore[import]
 from seanb.jsonfast import loads, dumps
 
 
+PrinterType = Literal["stderr", "table", "json"]
+
+
 class Printer:
-    def __init__(self, printer_type: str) -> None:
-        self.printer_type = printer_type
-        assert self.printer_type in ["stderr", "table", "json"]
+    def __init__(self, printer_type: PrinterType) -> None:
+        self.printer_type: PrinterType = printer_type
         self.messages: List[Tuple[str, str]] = []
 
     def print(self, msg: Tuple[str, str]) -> None:
@@ -25,8 +27,10 @@ class Printer:
             click.echo(f"json-compress: {msg[0]} {msg[1]}", err=True)
         elif self.printer_type == "json":
             click.echo(dumps({"file": msg[0], "msg": msg[1]}))
-        else:
+        elif self.printer_type == "table":
             self.messages.append(msg)
+        else:
+            raise ValueError(f"Invalid printer type: {self.printer_type}")
 
     def flush(self) -> None:
         if self.printer_type == "table":
@@ -48,7 +52,7 @@ class Printer:
 @click.option(
     "-o",
     "--output-fmt",
-    type=click.Choice(["stderr", "table", "json"]),
+    type=click.Choice(get_args(PrinterType)),
     help="Output format",
     default="stderr",
 )
@@ -58,7 +62,7 @@ class Printer:
     type=click.Path(allow_dash=True, exists=True, path_type=Path),
     required=True,
 )
-def main(check: bool, output_fmt: str, path: Sequence[Path]) -> None:
+def main(check: bool, output_fmt: PrinterType, path: Sequence[Path]) -> None:
     """
     pass files to compress, or '-' from STDIN
     """
