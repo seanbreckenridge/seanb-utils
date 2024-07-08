@@ -34,6 +34,8 @@ class Printer:
 
     def flush(self) -> None:
         if self.printer_type == "table":
+            if not self.messages:
+                return
             from tabulate import tabulate
 
             click.echo(
