@@ -1,4 +1,4 @@
 #!/bin/sh
-convert -V 'This is typically installed as part of imagemagick' convert || exit $?
+havecmd -V 'This is typically installed as part of imagemagick' magick || exit $?
 FILEPATH=${1:?Must provide image to convert}
-exec convert "$FILEPATH" "$(replace-extension "$FILEPATH" png)"
+exec magick convert "$FILEPATH" "$(replace-extension "$FILEPATH" png)"

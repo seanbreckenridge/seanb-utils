@@ -34,7 +34,7 @@ if [[ "$1" =~ ^[-]{1,2}?h(elp)?$ ]]; then
 fi
 
 havecmd -v ffmpeg || exit $?
-convert -V 'This is typically installed as part of imagemagick' convert || exit $?
+havecmd -V 'This is typically installed as part of imagemagick' magick || exit $?
 
 # quit if ffmpeg fails
 set -e
@@ -81,7 +81,7 @@ For best output, it should be a factor of 100; e.g. 10, 20, 25, 50
 	# convert to gif
 	# delay - speed, determined by fps above
 	# loop 0 - make gif repeat itself
-	convert -delay "${convert_delay}" -loop 0 -limit memory 2GB -limit map 2GB /tmp/gifme/*.png "${output_filename}"
+	magick convert -delay "${convert_delay}" -loop 0 -limit memory 2GB -limit map 2GB /tmp/gifme/*.png "${output_filename}"
 	printf "Created %s successfully\n" "${output_filename}"
 
 }
